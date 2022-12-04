@@ -11,7 +11,6 @@
     import javafx.scene.control.*;
     import javafx.scene.control.cell.PropertyValueFactory;
 
-    import javafx.scene.input.MouseEvent;
     import javafx.scene.layout.Background;
     import javafx.scene.paint.Color;
     import javafx.util.Callback;
@@ -43,22 +42,46 @@
         String sql;
         static Entidade ent = null;
 
-        public void adicionar(Entidade e) throws SQLException {
+        public void adicionar(Entidade e) {
             conn = ConnectionFactory.getConnection();
             sql = "INSERT INTO ENTIDADE VALUES(?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(2, e.getNome());
-            stmt.execute();
+            try {
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(2, e.getNome());
+                stmt.execute();
+            } catch (SQLException ex) {
+                Alert erro = new Alert(Alert.AlertType.WARNING);
+                erro.setTitle("Erro");
+                erro.setHeaderText("A nova entidade não foi salva porque já existe no banco de dados.\n" +
+                        "O sistema não permite a existência de registros duplicados.");
+                erro.setContentText("Cadastro não permitido: " + e.getNome());
+                erro.showAndWait();
+                txtEntidade.setText("");
+                txtEntidade.requestFocus();
+                throw new RuntimeException(ex);
+            }
             ConnectionFactory.closeConnection(conn, stmt);
         }
 
-        public void editar(Entidade e) throws SQLException {
+        public void editar(Entidade e) {
             conn = ConnectionFactory.getConnection();
             sql = "UPDATE ENTIDADE SET NOME = ? WHERE ID = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, e.getNome());
-            stmt.setInt(2, e.getId());
-            stmt.execute();
+            try {
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, e.getNome());
+                stmt.setInt(2, e.getId());
+                stmt.execute();
+            } catch (SQLException ex) {
+                Alert erro = new Alert(Alert.AlertType.WARNING);
+                erro.setTitle("Erro");
+                erro.setHeaderText("A nova entidade não foi salva porque já existe no banco de dados.\n" +
+                        "O sistema não permite a existência de registros duplicados.");
+                erro.setContentText("Cadastro não permitido: " + e.getNome());
+                erro.showAndWait();
+                txtEntidade.setText("");
+                txtEntidade.requestFocus();
+                throw new RuntimeException(ex);
+            }
             ConnectionFactory.closeConnection(conn, stmt);
         }
 
@@ -106,18 +129,18 @@
 
         public void salvarEntidade() throws SQLException {
             String nomeEntidade = txtEntidade.getText();
-            if(nomeEntidade.isEmpty()){
+            if (nomeEntidade.isEmpty()) {
                 btnCadastrar.isDisabled();
                 txtEntidade.requestFocus();
-            }else{
-                if(txtID.getText().isEmpty()){
+            } else {
+                if (txtID.getText().isEmpty()) {
                     Entidade e = new Entidade();
                     e.setNome(nomeEntidade);
                     adicionar(e);
                     atualizarTabela();
                     txtEntidade.requestFocus();
                     txtEntidade.setText("");
-                }else{
+                } else {
                     ent.setNome(nomeEntidade);
                     editar(ent);
                     atualizarTabela();
@@ -128,7 +151,7 @@
             }
         }
 
-        public void editarEntidade(Entidade entidade){
+        public void editarEntidade(Entidade entidade) {
             txtID.setText(String.valueOf(ent.getId()));
             txtEntidade.setText(entidade.getNome());
             txtEntidade.requestFocus();
@@ -160,12 +183,14 @@
                 public TableCell<Entidade, Integer> call(final TableColumn<Entidade, Integer> param) {
                     return new TableCell<>() {
                         private final Button btnEditar = new Button("Editar");
+
                         {
                             btnEditar.setOnAction((ActionEvent event) -> {
                                 ent = getTableView().getItems().get(getIndex());
                                 editarEntidade(ent);
                             });
                         }
+
                         @Override
                         public void updateItem(Integer item, boolean empty) {
                             super.updateItem(item, empty);
@@ -191,6 +216,7 @@
                 public TableCell<Entidade, Integer> call(final TableColumn<Entidade, Integer> param) {
                     return new TableCell<>() {
                         private final Button btnExcluir = new Button("Excluir");
+
                         {
                             btnExcluir.setOnAction((ActionEvent event) -> {
                                 Entidade e = getTableView().getItems().get(getIndex());
@@ -198,8 +224,8 @@
                                 alert.setTitle("Exclusão");
                                 alert.setHeaderText("Tem certeza que deseja excluir a entidade selecionada?");
                                 alert.setContentText(e.getNome());
-                                alert.showAndWait().ifPresent(response ->{
-                                    if(response == ButtonType.OK){
+                                alert.showAndWait().ifPresent(response -> {
+                                    if (response == ButtonType.OK) {
                                         try {
                                             remover(e);
                                             txtEntidade.setText("");
@@ -211,6 +237,7 @@
                                 });
                             });
                         }
+
                         @Override
                         public void updateItem(Integer item, boolean empty) {
                             super.updateItem(item, empty);
@@ -244,7 +271,7 @@
             });
         }
 
-        public void selecaoEntidade(MouseEvent mouseEvent) {
+        public void selecaoEntidade() {
             Entidade e = tblEntidades.getSelectionModel().getSelectedItem();
             System.out.println(e.getId() + " - " + e.getNome());
         }

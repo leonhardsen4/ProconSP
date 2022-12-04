@@ -30,9 +30,10 @@ public class Database {
                 );
                 
                 --TABELA ENTIDADE--
-                CREATE TABLE IF NOT EXISTS ENTIDADE (
+                CREATE TABLE ENTIDADE (
                     ID   INTEGER PRIMARY KEY AUTOINCREMENT,
                     NOME TEXT    NOT NULL
+                                 UNIQUE ON CONFLICT ROLLBACK
                 );
                 
                 --TABELA SETOR--

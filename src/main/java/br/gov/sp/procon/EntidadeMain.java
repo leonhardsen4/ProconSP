@@ -20,7 +20,7 @@ public class EntidadeMain extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Login.class.getResource("entidade.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 770, 600);
             stage.setScene(scene);
-            stage.setTitle("Cadastro de Entidade");
+            stage.setTitle("Entidade");
             stage.show();
         }
     }

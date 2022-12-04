@@ -10,12 +10,11 @@ public class Endereco {
     private String bairro;
     private String municipio;
     private String uf;
-    private String observacoes;
 
     public Endereco() {
     }
 
-    public Endereco(int id, int idEntidade, String logradouro, String numero, String complemento, String bairro, String municipio, String uf, String observacoes) {
+    public Endereco(int id, int idEntidade, String logradouro, String numero, String complemento, String bairro, String municipio, String uf) {
         this.id = id;
         this.idEntidade = idEntidade;
         this.logradouro = logradouro;
@@ -24,7 +23,6 @@ public class Endereco {
         this.bairro = bairro;
         this.municipio = municipio;
         this.uf = uf;
-        this.observacoes = observacoes;
     }
 
     public int getId() {
@@ -91,14 +89,6 @@ public class Endereco {
         this.uf = uf;
     }
 
-    public String getObservacoes() {
-        return observacoes;
-    }
-
-    public void setObservacoes(String observacoes) {
-        this.observacoes = observacoes;
-    }
-
     @Override
     public String toString() {
         return "Endereco{" +
@@ -110,7 +100,6 @@ public class Endereco {
                 ", bairro='" + bairro + '\'' +
                 ", municipio='" + municipio + '\'' +
                 ", uf='" + uf + '\'' +
-                ", observacoes='" + observacoes + '\'' +
                 '}';
     }
 }
