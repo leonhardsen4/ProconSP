@@ -4,6 +4,7 @@ public class Endereco {
 
     private int id;
     private int idEntidade;
+    private String cep;
     private String logradouro;
     private String numero;
     private String complemento;
@@ -14,9 +15,10 @@ public class Endereco {
     public Endereco() {
     }
 
-    public Endereco(int id, int idEntidade, String logradouro, String numero, String complemento, String bairro, String municipio, String uf) {
+    public Endereco(int id, int idEntidade, String cep, String logradouro, String numero, String complemento, String bairro, String municipio, String uf) {
         this.id = id;
         this.idEntidade = idEntidade;
+        this.cep = cep;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
@@ -39,6 +41,14 @@ public class Endereco {
 
     public void setIdEntidade(int idEntidade) {
         this.idEntidade = idEntidade;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public String getLogradouro() {
@@ -94,6 +104,7 @@ public class Endereco {
         return "Endereco{" +
                 "id=" + id +
                 ", idEntidade=" + idEntidade +
+                ", cep='" + cep + '\'' +
                 ", logradouro='" + logradouro + '\'' +
                 ", numero='" + numero + '\'' +
                 ", complemento='" + complemento + '\'' +
