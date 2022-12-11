@@ -3,6 +3,7 @@ module br.gov.sp.procon {
     requires javafx.fxml;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires java.desktop;
 
     exports br.gov.sp.procon;
     opens br.gov.sp.procon to javafx.fxml;

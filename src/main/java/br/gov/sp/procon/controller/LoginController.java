@@ -1,106 +1,100 @@
 package br.gov.sp.procon.controller;
 
-
+import br.gov.sp.procon.TelaPrincipal;
+import br.gov.sp.procon.model.Usuario;
 import br.gov.sp.procon.utils.ConnectionFactory;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ResourceBundle;
 
-public class LoginController {
-
-    Connection conn;
-    PreparedStatement stmt;
-    ResultSet rs;
-    String sql;
+public class LoginController implements Initializable {
 
     @FXML
-    private Button btnEntrar;
+    public Button btnEntrar;
     @FXML
-    private Button btnCadastrar;
+    public PasswordField txtSenha;
     @FXML
-    private Label lblErroUsuario;
+    public TextField txtUsuario;
     @FXML
-    private Label lblErroSenha;
+    public BorderPane bpTelaLogin;
     @FXML
-    private TextField txtUsuario;
-    @FXML
-    private PasswordField txtSenha;
+    private ImageView imageLogo;
 
-    public Boolean verifyUser(String usuario) throws SQLException{
-        conn = ConnectionFactory.getConnection();
-        sql = "SELECT * FROM USUARIOS WHERE USUARIO = ?";
-        stmt = conn.prepareStatement(sql);
-        stmt.setString(1, usuario);
-        rs = stmt.executeQuery();
-        if(rs.next()){
-            ConnectionFactory.closeConnection(conn, stmt, rs);
-            lblErroUsuario.setVisible(false);
-            return true;
+    static Usuario usuarioLogado;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        File proconSPFile = new File("images/procon-sp-logo.png");
+        Image proconSPLogo = new Image(proconSPFile.toURI().toString());
+        imageLogo.setImage(proconSPLogo);
+    }
+
+    public void login() {
+        if(!txtUsuario.getText().isBlank() && !txtSenha.getText().isEmpty()){
+            validarLogin();
         }else{
-            ConnectionFactory.closeConnection(conn, stmt, rs);
-            lblErroUsuario.setText("Usuário não encontrado");
-            lblErroUsuario.setVisible(true);
-            return false;
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção!");
+            alert.setContentText("Ambos os campos usuário e senha precisam ser preenchidos.");
+            alert.showAndWait();
+            txtUsuario.setText("");
+            txtSenha.setText("");
+            txtUsuario.requestFocus();
         }
     }
 
-    public Boolean verifyPassword (String usuario, String senha) throws SQLException {
-        if (verifyUser(usuario)) {
-            conn = ConnectionFactory.getConnection();
-            sql = "SELECT USUARIO FROM USUARIOS WHERE SENHA = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, senha);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                ConnectionFactory.closeConnection(conn, stmt, rs);
-                lblErroSenha.setVisible(false);
-                System.out.println("Login realizado com sucesso!");
-                return true;
-            }else{
-                ConnectionFactory.closeConnection(conn, stmt, rs);
-                lblErroSenha.setText("Senha incorreta");
-                lblErroSenha.setVisible(true);
-            }
-        }
-        return false;
-    }
-
-    public void verifyUser(ActionEvent actionEvent) throws SQLException {
+    private void validarLogin() {
+        Connection conn = ConnectionFactory.getConnection();
         String usuario = txtUsuario.getText();
         String senha = txtSenha.getText();
-        verifyPassword(usuario, senha);
+        String sql = "SELECT * FROM USUARIO WHERE USUARIO = " + usuario + " AND SENHA = " + senha + ";";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                usuarioLogado = new Usuario();
+                usuarioLogado.setId(rs.getInt("ID"));
+                usuarioLogado.setUsuario(rs.getString("USUARIO"));
+                usuarioLogado.setNome(rs.getString("NOME"));
+                usuarioLogado.setSenha(rs.getString("SENHA"));
+                new TelaPrincipal(usuarioLogado);
+                fecharLogin();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
-    public void closeWindow(){
-        Stage stage = (Stage) btnCadastrar.getScene().getWindow();
+    private void fecharLogin() {
+        Stage stage = (Stage) bpTelaLogin.getScene().getWindow();
         stage.close();
     }
 
-    public void setFocusTxtSenha(KeyEvent keyEvent) {
+
+    public void focarSenha(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             txtSenha.requestFocus();
         }
     }
 
-    public void setFocusBtnEntrar(KeyEvent keyEvent) {
+    public void cliqueBtnEntrar(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
-            btnEntrar.requestFocus();
+            login();
         }
     }
-
-    //    public void openCadastro(ActionEvent actionEvent) throws IOException {
-//            FXMLLoader fxmlLoader = new FXMLLoader(Login.class.getResource("cadastro-view.fxml"));
-//            Scene scene = new Scene(fxmlLoader.load(), 400, 400);
-//            Stage stage = new Stage();
-//            stage.setTitle("Cadastro");
-//            stage.setScene(scene);
-//            stage.show();
-//    }
 }
