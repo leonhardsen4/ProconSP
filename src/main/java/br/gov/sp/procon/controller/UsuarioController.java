@@ -2,6 +2,7 @@ package br.gov.sp.procon.controller;
 
 import br.gov.sp.procon.model.Usuario;
 import br.gov.sp.procon.utils.ConnectionFactory;
+import br.gov.sp.procon.utils.PasswordUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -127,7 +128,7 @@ public class UsuarioController implements Initializable {
             stmt = conn.prepareStatement(sql);
             stmt.setString(2, u.getUsuario());
             stmt.setString(3, u.getNome());
-            stmt.setString(4, u.getSenha());
+            stmt.setString(4, PasswordUtil.criptografa256(u.getSenha()));
             stmt.execute();
         } catch (SQLException ex){
             Alert erro = new Alert(Alert.AlertType.ERROR);
@@ -153,7 +154,7 @@ public class UsuarioController implements Initializable {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, u.getUsuario());
             stmt.setString(2, u.getNome());
-            stmt.setString(3, u.getSenha());
+            stmt.setString(3, PasswordUtil.criptografa256(u.getSenha()));
             stmt.setInt(4, u.getId());
             stmt.execute();
         } catch (SQLException e) {

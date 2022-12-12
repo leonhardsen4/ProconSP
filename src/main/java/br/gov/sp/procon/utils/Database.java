@@ -12,14 +12,14 @@ public class Database {
         stmt.execute("""
                 --TABELA USUARIO--
                 CREATE TABLE USUARIO (
-                    ID      INTEGER PRIMARY KEY AUTOINCREMENT,
-                    USUARIO TEXT    NOT NULL
-                                    UNIQUE ON CONFLICT ROLLBACK,
-                    NOME            NOT NULL
-                                    UNIQUE ON CONFLICT ROLLBACK,
-                    SENHA   TEXT    NOT NULL
-                                    DEFAULT (12345)
-                );
+                      ID      INTEGER   PRIMARY KEY AUTOINCREMENT,
+                      USUARIO TEXT      NOT NULL
+                                        UNIQUE ON CONFLICT ROLLBACK,
+                      NOME              NOT NULL
+                                        UNIQUE ON CONFLICT ROLLBACK,
+                      SENHA   TEXT (64) NOT NULL
+                                        DEFAULT (12345)
+                  );
                                                                
                 """);
         ConnectionFactory.closeConnection(conn, stmt);

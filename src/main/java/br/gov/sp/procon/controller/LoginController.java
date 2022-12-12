@@ -60,8 +60,8 @@ public class LoginController implements Initializable {
     private void validarLogin() {
         Connection conn = ConnectionFactory.getConnection();
         String usuario = txtUsuario.getText();
-        String senha = txtSenha.getText();
-        String sql = "SELECT * FROM USUARIO WHERE USUARIO = " + usuario + " AND SENHA = " + senha + ";";
+        String senha = PasswordUtil.criptografa256(txtSenha.getText());
+        String sql = "SELECT * FROM USUARIO WHERE USUARIO = " + usuario + " AND SENHA = '" + senha + "';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
