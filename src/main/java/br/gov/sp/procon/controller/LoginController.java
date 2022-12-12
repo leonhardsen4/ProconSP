@@ -3,6 +3,7 @@ package br.gov.sp.procon.controller;
 import br.gov.sp.procon.TelaPrincipal;
 import br.gov.sp.procon.model.Usuario;
 import br.gov.sp.procon.utils.ConnectionFactory;
+import br.gov.sp.procon.utils.PasswordUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
@@ -65,7 +65,15 @@ public class LoginController implements Initializable {
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
+            if(!rs.next()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Atenção!");
+                alert.setContentText("Um dos campos 'usuário' ou 'senha' (ou ambos) está incorreto.");
+                alert.showAndWait();
+                txtUsuario.setText("");
+                txtSenha.setText("");
+                txtUsuario.requestFocus();
+            } else {
                 usuarioLogado = new Usuario();
                 usuarioLogado.setId(rs.getInt("ID"));
                 usuarioLogado.setUsuario(rs.getString("USUARIO"));
@@ -74,6 +82,9 @@ public class LoginController implements Initializable {
                 new TelaPrincipal(usuarioLogado);
                 fecharLogin();
             }
+            rs.close();
+            stmt.close();
+            ConnectionFactory.closeConnection(conn);
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

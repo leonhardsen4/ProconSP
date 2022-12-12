@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="telaUsuarios" maxHeight="354.0" maxWidth="437.0" minHeight="354.0" minWidth="437.0" prefHeight="354.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.gov.sp.procon.controller.UsuarioController">
-    <TableView fx:id="tblUsuarios" layoutX="14.0" layoutY="80.0" prefHeight="260.0" prefWidth="409.0">
+<AnchorPane fx:id="telaUsuarios" maxHeight="354.0" maxWidth="700.0" minHeight="354.0" minWidth="437.0" prefHeight="354.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.gov.sp.procon.controller.UsuarioController">
+   <TextField fx:id="txtId" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="39.0" promptText="ID" />
+    <TableView fx:id="tblUsuarios" layoutX="14.0" layoutY="48.0" prefHeight="292.0" prefWidth="671.0">
       <columns>
           <TableColumn fx:id="tcId" editable="false" prefWidth="50.0" text="ID" />
-          <TableColumn fx:id="tcUsuario" prefWidth="177.0" text="Usuário" />
-          <TableColumn fx:id="tcEditar" prefWidth="90.0" text="Editar" />
-          <TableColumn fx:id="tcExcluir" prefWidth="90.0" text="Excluir" />
+          <TableColumn fx:id="tcUsuario" prefWidth="100.0" text="Usuário" />
+          <TableColumn fx:id="tcNome" prefWidth="366.0" text="Nome" />
+          <TableColumn fx:id="tcEditar" prefWidth="78.0" text="Editar" />
+          <TableColumn fx:id="tcExcluir" prefWidth="74.0" text="Excluir" />
       </columns>
     </TableView>
-    <Button fx:id="btnSalvar" layoutX="354.0" layoutY="14.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="69.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
+    <Button fx:id="btnSalvar" layoutX="617.0" layoutY="14.0" mnemonicParsing="false" onAction="#salvarUsuario" prefHeight="26.0" prefWidth="69.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
         <cursor>
           <Cursor fx:constant="CLOSED_HAND" />
         </cursor>
     </Button>
-    <TextField fx:id="txtUsuario" layoutX="15.0" layoutY="14.0" prefHeight="26.0" prefWidth="330.0" promptText="Usuário" />
-    <PasswordField fx:id="txtSenha" layoutX="15.0" layoutY="45.0" prefHeight="26.0" prefWidth="330.0" promptText="Senha" />
+    <TextField fx:id="txtUsuario" layoutX="60.0" layoutY="14.0" prefHeight="26.0" prefWidth="80.0" promptText="Usuário" />
+    <PasswordField fx:id="txtSenha" layoutX="484.0" layoutY="14.0" prefHeight="26.0" prefWidth="127.0" promptText="Senha" />
+   <TextField fx:id="txtNome" layoutX="145.0" layoutY="14.0" prefHeight="26.0" prefWidth="334.0" promptText="Nome" />
 </AnchorPane>

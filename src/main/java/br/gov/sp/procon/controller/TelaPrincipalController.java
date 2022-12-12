@@ -34,7 +34,7 @@ public class TelaPrincipalController implements Initializable{
 
     public void abrirUsuarios() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Login.class.getResource("Usuarios.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 437, 354);
+        Scene scene = new Scene(fxmlLoader.load(), 700, 354);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("USUÁRIOS");

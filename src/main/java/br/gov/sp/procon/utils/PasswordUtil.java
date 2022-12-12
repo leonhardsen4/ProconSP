@@ -10,7 +10,7 @@ public class PasswordUtil {
             MessageDigest algoritmo = MessageDigest.getInstance("SHA-256");
             byte[] messageDigest = algoritmo.digest(senha.getBytes(StandardCharsets.UTF_8));
             for (byte b : messageDigest) {
-                criptografada.append(String.format("%02X", 0xFF & b));
+                criptografada.append(String.format("%01X", 0xFF & b));
             }
             return criptografada.toString();
         } catch (Exception e) {

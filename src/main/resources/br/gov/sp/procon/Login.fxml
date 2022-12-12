@@ -20,16 +20,12 @@
                        preserveRatio="true">
                <Image url="@../../../../../../../images/procon-sp-logo.png"/>
             </ImageView>
-            <Button fx:id="btnEntrar" layoutX="76.0" layoutY="215.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #32CD32;" text="Entrar" textFill="WHITE" onAction="#login">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
-            <PasswordField fx:id="txtSenha" onKeyPressed="#cliqueBtnEntrar" layoutX="76.0" layoutY="175.0" prefHeight="30.0" prefWidth="200.0" promptText="Senha" />
             <TextField fx:id="txtUsuario" onKeyPressed="#focarSenha" layoutX="76.0" layoutY="138.0" prefHeight="30.0" prefWidth="200.0" promptText="Usuário" />
+            <PasswordField fx:id="txtSenha" onKeyPressed="#cliqueBtnEntrar" layoutX="76.0" layoutY="175.0" prefHeight="30.0" prefWidth="200.0" promptText="Senha" />
+            <Button fx:id="btnEntrar" layoutX="76.0" layoutY="215.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #32CD32;" text="Entrar" textFill="WHITE" onAction="#login">
+               <Cursor fx:constant="CLOSED_HAND" />
+               <Font name="System Bold" size="15.0" />
+            </Button>
          </Pane>
       </AnchorPane>
    </center>

@@ -35,6 +35,7 @@
         public TableColumn<Entidade, Integer> colunaEditar;
         @FXML
         public TableColumn<Entidade, Integer> colunaExcluir;
+        @FXML
         public Label txtID;
         Connection conn;
         PreparedStatement stmt;
@@ -50,7 +51,7 @@
                 stmt.setString(2, e.getNome());
                 stmt.execute();
             } catch (SQLException ex) {
-                Alert erro = new Alert(Alert.AlertType.WARNING);
+                Alert erro = new Alert(Alert.AlertType.ERROR);
                 erro.setTitle("Erro");
                 erro.setHeaderText("A nova entidade não foi salva porque já existe no banco de dados.\n" +
                         "O sistema não permite a existência de registros duplicados.");
@@ -72,7 +73,7 @@
                 stmt.setInt(2, e.getId());
                 stmt.execute();
             } catch (SQLException ex) {
-                Alert erro = new Alert(Alert.AlertType.WARNING);
+                Alert erro = new Alert(Alert.AlertType.ERROR);
                 erro.setTitle("Erro");
                 erro.setHeaderText("A nova entidade não foi salva porque já existe no banco de dados.\n" +
                         "O sistema não permite a existência de registros duplicados.");

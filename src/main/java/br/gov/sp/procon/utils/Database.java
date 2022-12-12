@@ -13,8 +13,10 @@ public class Database {
                 --TABELA USUARIO--
                 CREATE TABLE USUARIO (
                     ID      INTEGER PRIMARY KEY AUTOINCREMENT,
-                    USUARIO TEXT    NOT NULL,
-                    NOME            NOT NULL,
+                    USUARIO TEXT    NOT NULL
+                                    UNIQUE ON CONFLICT ROLLBACK,
+                    NOME            NOT NULL
+                                    UNIQUE ON CONFLICT ROLLBACK,
                     SENHA   TEXT    NOT NULL
                                     DEFAULT (12345)
                 );
