@@ -19,6 +19,7 @@ public class TelaPrincipal extends Application {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("PROCON.SP/NCA");
+        stage.setMaximized(true);
         stage.show();
         System.out.println("Tela Principal - Usuário logado: ID: "
                 + usuario.getId() + " - Usuário: "

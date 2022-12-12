@@ -4,41 +4,37 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Relogio{
+public class Relogio {
 
     public static void main(String[] args){
-        RelogioThread thread = new RelogioThread();
-        thread.start();
+        getDataHoraAtual();
     }
 
-}
+    public static void getDataHoraAtual() {
 
-class RelogioThread extends Thread{
+        Timer timer = new Timer();
+        final long TEMPO = 1000;
 
-    public void run() {
-
-        LocalDateTime agora;
-        String data;
-        String hora;
-        String dataHora;
-        String diaDaSemana;
-        DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        while (true) {
-            try {
+        TimerTask tarefa = new TimerTask() {
+            public void run () {
+                LocalDateTime agora;
+                String data;
+                String hora;
+                String diaDaSemana;
+                DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
                 agora = LocalDateTime.now();
-                diaDaSemana = String.valueOf(agora.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-br")).toUpperCase());
+                diaDaSemana = agora.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-br")).toUpperCase();
                 data = formatterData.format(agora);
                 hora = formatterHora.format(agora);
-                dataHora = diaDaSemana + ", " + data + ", " + hora;
-                System.out.println(dataHora);
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                String dataHoraAtual = diaDaSemana + ", " + data + ", " + hora;
+                System.out.println(dataHoraAtual);
             }
-        }
+        };
+        timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
     }
 
 }

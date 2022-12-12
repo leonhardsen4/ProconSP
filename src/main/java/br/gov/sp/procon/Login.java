@@ -16,6 +16,7 @@ public class Login extends Application {
         double height = Screen.getPrimary().getVisualBounds().getHeight();
         Scene scene = new Scene(fxmlLoader.load(), width, height);
         stage.setTitle("Login");
+        stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
     }

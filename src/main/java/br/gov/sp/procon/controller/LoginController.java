@@ -4,6 +4,7 @@ import br.gov.sp.procon.TelaPrincipal;
 import br.gov.sp.procon.model.Usuario;
 import br.gov.sp.procon.utils.ConnectionFactory;
 import br.gov.sp.procon.utils.PasswordUtil;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;

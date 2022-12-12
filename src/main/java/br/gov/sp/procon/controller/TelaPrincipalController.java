@@ -38,6 +38,7 @@ public class TelaPrincipalController implements Initializable{
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("USUÁRIOS");
+        stage.setResizable(false);
         stage.show();
         Usuario usuario = LoginController.usuarioLogado;
         System.out.println("Tela Usuários - Usuário logado: ID: "

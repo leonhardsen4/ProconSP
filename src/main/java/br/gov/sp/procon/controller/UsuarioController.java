@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
@@ -289,7 +291,7 @@ public class UsuarioController implements Initializable {
                             setGraphic(null);
                         } else {
                             btnEditar.setText("Editar");
-                            btnEditar.setCursor(Cursor.CLOSED_HAND);
+                            btnEditar.setCursor(Cursor.HAND);
                             btnEditar.setBackground(Background.fill(Color.rgb(255, 140, 0)));
                             btnEditar.setStyle("-fx-text-fill: #FFFFFF");
                             setGraphic(btnEditar);
@@ -314,7 +316,7 @@ public class UsuarioController implements Initializable {
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                             alert.setTitle("Exclusão");
                             alert.setHeaderText("Tem certeza que deseja excluir o usuário selecionado?");
-                            alert.setContentText("usuário: "+ u.getUsuario() + " - Nome: " + u.getNome());
+                            alert.setContentText("Usuário: "+ u.getUsuario() + " - Nome: " + u.getNome());
                             alert.showAndWait().ifPresent(response -> {
                                 if (response == ButtonType.OK) {
                                     try {
@@ -340,7 +342,7 @@ public class UsuarioController implements Initializable {
                             setGraphic(null);
                         } else {
                             btnExcluir.setText("Excluir");
-                            btnExcluir.setCursor(Cursor.CLOSED_HAND);
+                            btnExcluir.setCursor(Cursor.HAND);
                             btnExcluir.setBackground(Background.fill(Color.rgb(220, 20, 60)));
                             btnExcluir.setStyle("-fx-text-fill: #FFFFFF");
                             setGraphic(btnExcluir);
@@ -352,4 +354,21 @@ public class UsuarioController implements Initializable {
         tcExcluir.setCellFactory(cellFactory);
     }
 
+    public void focoNome(KeyEvent keyEvent) {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            txtNome.requestFocus();
+        }
+    }
+
+    public void focoSenha(KeyEvent keyEvent) {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            txtSenha.requestFocus();
+        }
+    }
+
+    public void focoBtnSalvar(KeyEvent keyEvent) throws SQLException {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            salvarUsuario();
+        }
+    }
 }

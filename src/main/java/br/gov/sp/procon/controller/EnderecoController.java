@@ -1,31 +1,84 @@
 package br.gov.sp.procon.controller;
 
+import br.gov.sp.procon.model.Endereco;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+
 import java.sql.SQLException;
 import java.util.List;
 
-public class EnderecoController<T> implements MetodosBasicos<T> {
-    @Override
-    public void adicionar(T t) throws SQLException {
+public class EnderecoController {
+    @FXML
+    public AnchorPane telaEndereco;
+    @FXML
+    public TextField txtIdEntidade;
+    @FXML
+    public TextField txtEntidade;
+    @FXML
+    public TextField txtID;
+    @FXML
+    public TextField txtCEP;
+    @FXML
+    public TextField txtLogradouro;
+    @FXML
+    public TextField txtNumero;
+    @FXML
+    public TextField txtComplemento;
+    @FXML
+    public TextField txtBairro;
+    @FXML
+    public TextField txtMunicipio;
+    @FXML
+    public ComboBox<String> cmbUF;
+    @FXML
+    public Button btnSalvar;
+    @FXML
+    public TableView<Endereco> tblEndereco;
+    @FXML
+    public TableColumn<Endereco, Integer> tcID;
+    @FXML
+    public TableColumn<Endereco, String> tcCEP;
+    @FXML
+    public TableColumn<Endereco, String> tcLogradouro;
+    @FXML
+    public TableColumn<Endereco, String> tcNumero;
+    @FXML
+    public TableColumn<Endereco, String> tcComplemento;
+    @FXML
+    public TableColumn<Endereco, String> tcBairro;
+    @FXML
+    public TableColumn<Endereco, String> tcMunicipio;
+    @FXML
+    public TableColumn<Endereco, String> tcUF;
+    @FXML
+    public TableColumn<Endereco, Integer> tcEditar;
+    @FXML
+    public TableColumn<Endereco, Integer> tcExcluir;
+
+
+
+    public void adicionar() throws SQLException {
         
     }
 
-    @Override
-    public void editar(T t) throws SQLException {
+
+    public void editar() throws SQLException {
 
     }
 
-    @Override
-    public void remover(T t) throws SQLException {
+
+    public void remover() throws SQLException {
 
     }
 
-    @Override
-    public List<T> listarTodos() throws SQLException {
+
+    public List<Endereco> listarTodos() throws SQLException {
         return null;
     }
 
-    @Override
-    public List<T> buscar(String string) throws SQLException {
+
+    public List<Endereco> buscar(String string) throws SQLException {
         return null;
     }
 }
