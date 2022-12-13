@@ -38,19 +38,7 @@ public class EnderecoController {
     @FXML
     public TableColumn<Endereco, Integer> tcID;
     @FXML
-    public TableColumn<Endereco, String> tcCEP;
-    @FXML
-    public TableColumn<Endereco, String> tcLogradouro;
-    @FXML
-    public TableColumn<Endereco, String> tcNumero;
-    @FXML
-    public TableColumn<Endereco, String> tcComplemento;
-    @FXML
-    public TableColumn<Endereco, String> tcBairro;
-    @FXML
-    public TableColumn<Endereco, String> tcMunicipio;
-    @FXML
-    public TableColumn<Endereco, String> tcUF;
+    public TableColumn<Endereco, String> tcEndereco;
     @FXML
     public TableColumn<Endereco, Integer> tcEditar;
     @FXML
