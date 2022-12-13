@@ -22,7 +22,8 @@ public class Database {
                   );
                                                                
                 """);
-        ConnectionFactory.closeConnection(conn, stmt);
+        stmt.close();
+        ConnectionFactory.closeConnection(conn);
     }
 
 

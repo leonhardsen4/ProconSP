@@ -27,34 +27,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class UsuarioController implements Initializable {
-    @FXML
-    public AnchorPane telaUsuarios;
-    @FXML
-    public TableView<Usuario> tblUsuarios;
-    @FXML
-    public TableColumn<Usuario, Integer> tcId;
-    @FXML
-    public TableColumn<Usuario, String> tcUsuario;
-    @FXML
-    public TableColumn<Usuario, String> tcNome;
-    @FXML
-    public TableColumn<Usuario, Integer> tcEditar;
-    @FXML
-    public TableColumn<Usuario, Integer> tcExcluir;
-    @FXML
-    public Button btnSalvar;
-    @FXML
-    public TextField txtId;
-    @FXML
-    public TextField txtUsuario;
-    @FXML
-    public TextField txtNome;
-    @FXML
-    public PasswordField txtSenha;
-
-
+    @FXML public AnchorPane telaUsuarios;
+    @FXML public TableView<Usuario> tblUsuarios;
+    @FXML public TableColumn<Usuario, Integer> tcId;
+    @FXML public TableColumn<Usuario, String> tcUsuario;
+    @FXML public TableColumn<Usuario, String> tcNome;
+    @FXML public TableColumn<Usuario, Integer> tcEditar;
+    @FXML public TableColumn<Usuario, Integer> tcExcluir;
+    @FXML public Button btnSalvar;
+    @FXML public TextField txtId;
+    @FXML public TextField txtUsuario;
+    @FXML public TextField txtNome;
+    @FXML public PasswordField txtSenha;
     ObservableList<Usuario> usuarioObservableList = FXCollections.observableArrayList();
-
     Connection conn;
     PreparedStatement stmt;
     ResultSet rs;

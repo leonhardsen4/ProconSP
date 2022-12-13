@@ -1,4 +1,4 @@
-package br.gov.sp.procon;
+package br.gov.sp.procon.view;
 
 import br.gov.sp.procon.utils.Database;
 import javafx.application.Application;
@@ -8,18 +8,18 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-public class EntidadeMain extends Application {
+public class TelaEntidade extends Application {
         public static void main(String[] args) throws SQLException {
-            launch(EntidadeMain.class);
-            Database database = new Database();
-            database.createTables();
+            launch(TelaEntidade.class);
+            Database.createTables();
         }
 
         @Override
         public void start(Stage stage) throws Exception {
-            FXMLLoader fxmlLoader = new FXMLLoader(Login.class.getResource("entidade.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("Entidade.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 770, 600);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.setTitle("Entidade");
             stage.show();
         }

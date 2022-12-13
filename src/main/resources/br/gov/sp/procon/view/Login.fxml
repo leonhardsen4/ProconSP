@@ -11,7 +11,7 @@
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="350.0">
          <Pane prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: #FFFFFF;">
             <ImageView fx:id="imageLogo" fitHeight="245.0" fitWidth="215.0" layoutX="68.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../../../../../images/procon-sp-logo.png" />
+               <Image url="@../../../../../../../../images/procon-sp-logo.png" />
             </ImageView>
             <TextField fx:id="txtUsuario" layoutX="76.0" layoutY="138.0" onKeyPressed="#focarSenha" prefHeight="30.0" prefWidth="200.0" promptText="Usuário" />
             <PasswordField fx:id="txtSenha" layoutX="76.0" layoutY="175.0" onKeyPressed="#cliqueBtnEntrar" prefHeight="30.0" prefWidth="200.0" promptText="Senha" />

@@ -1,6 +1,6 @@
 package br.gov.sp.procon.controller;
 
-import br.gov.sp.procon.TelaPrincipal;
+import br.gov.sp.procon.view.TelaPrincipal;
 import br.gov.sp.procon.model.Usuario;
 import br.gov.sp.procon.utils.ConnectionFactory;
 import br.gov.sp.procon.utils.PasswordUtil;
@@ -24,18 +24,13 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    @FXML
-    public Button btnEntrar;
-    @FXML
-    public PasswordField txtSenha;
-    @FXML
-    public TextField txtUsuario;
-    @FXML
-    public BorderPane bpTelaLogin;
-    @FXML
-    private ImageView imageLogo;
+    @FXML public Button btnEntrar;
+    @FXML public PasswordField txtSenha;
+    @FXML public TextField txtUsuario;
+    @FXML public BorderPane bpTelaLogin;
+    @FXML private ImageView imageLogo;
 
-    static Usuario usuarioLogado;
+    static Usuario uLogado;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -75,12 +70,14 @@ public class LoginController implements Initializable {
                 txtSenha.setText("");
                 txtUsuario.requestFocus();
             } else {
-                usuarioLogado = new Usuario();
-                usuarioLogado.setId(rs.getInt("ID"));
-                usuarioLogado.setUsuario(rs.getString("USUARIO"));
-                usuarioLogado.setNome(rs.getString("NOME"));
-                usuarioLogado.setSenha(rs.getString("SENHA"));
-                new TelaPrincipal(usuarioLogado);
+                uLogado = new Usuario();
+                uLogado.setId(rs.getInt("ID"));
+                uLogado.setUsuario(rs.getString("USUARIO"));
+                uLogado.setNome(rs.getString("NOME"));
+                uLogado.setSenha(rs.getString("SENHA"));
+                TelaPrincipal telaPrincipal  = new TelaPrincipal();
+                telaPrincipal.start(new Stage());
+                System.out.println("O usuario " + uLogado.getUsuario() + " fez login com sucesso.");
                 fecharLogin();
             }
             rs.close();

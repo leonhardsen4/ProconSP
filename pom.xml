@@ -68,7 +68,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>br.gov.sp.procon/br.gov.sp.procon.Login</mainClass>
+                            <mainClass>br.gov.sp.procon/br.gov.sp.procon.view.TelaLogin</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
