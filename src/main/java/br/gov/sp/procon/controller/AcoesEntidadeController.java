@@ -2,14 +2,18 @@ package br.gov.sp.procon.controller;
 
 import br.gov.sp.procon.model.Endereco;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class EnderecoController {
-    @FXML public AnchorPane telaEndereco;
+public class AcoesEntidadeController implements Initializable {
+
+    @FXML public AnchorPane telaAcoesEntidade;
     @FXML public TextField txtIdEntidade;
     @FXML public TextField txtEntidade;
     @FXML public TextField txtID;
@@ -47,4 +51,9 @@ public class EnderecoController {
         return null;
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        txtIdEntidade.setText(String.valueOf(EntidadeController.ent.getId()));
+        txtEntidade.setText(EntidadeController.ent.getNome());
+    }
 }

@@ -1,9 +1,9 @@
 package br.gov.sp.procon.controller;
 
 
+import br.gov.sp.procon.view.TelaEntidade;
 import br.gov.sp.procon.view.TelaUsuarios;
 import javafx.fxml.FXML;
-
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Button;
@@ -21,7 +21,9 @@ public class TelaPrincipalController implements Initializable{
     @FXML public BorderPane telaPrincipal;
     @FXML public ImageView proconSPLogoImage;
     @FXML public Button btnUsuarios;
+    @FXML public Button btnEntidades;
     @FXML public Label lblUsuario;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -35,6 +37,11 @@ public class TelaPrincipalController implements Initializable{
         TelaUsuarios telaUsuarios = new TelaUsuarios();
         telaUsuarios.start(new Stage());
         System.out.println("O usuário " + LoginController.uLogado.getUsuario() + " entrou na tela de usuários.");
+    }
 
+    public void abrirEntidades() throws Exception {
+        TelaEntidade telaEntidade = new TelaEntidade();
+        telaEntidade.start(new Stage());
+        System.out.println("O usuário " + LoginController.uLogado.getUsuario() + " entrou na tela de entidades.");
     }
 }

@@ -57,7 +57,7 @@ public class LoginController implements Initializable {
         Connection conn = ConnectionFactory.getConnection();
         String usuario = txtUsuario.getText();
         String senha = PasswordUtil.criptografa256(txtSenha.getText());
-        String sql = "SELECT * FROM USUARIO WHERE USUARIO = " + usuario + " AND SENHA = '" + senha + "';";
+        String sql = "SELECT * FROM USUARIOS WHERE USUARIO = " + usuario + " AND SENHA = '" + senha + "';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -86,6 +86,7 @@ public class LoginController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
+            throw new RuntimeException(e.getMessage());
         }
     }
 

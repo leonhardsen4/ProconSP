@@ -35,6 +35,7 @@ public class UsuarioController implements Initializable {
     @FXML public TableColumn<Usuario, Integer> tcEditar;
     @FXML public TableColumn<Usuario, Integer> tcExcluir;
     @FXML public Button btnSalvar;
+    @FXML public Button btnLimpar;
     @FXML public TextField txtId;
     @FXML public TextField txtUsuario;
     @FXML public TextField txtNome;
@@ -59,7 +60,7 @@ public class UsuarioController implements Initializable {
         tcExcluir.setStyle("-fx-alignment: CENTER");
         String usuario = txtUsuario.getText().toUpperCase();
         String nome = txtNome.getText().toUpperCase();
-        sql = "SELECT * FROM USUARIO WHERE USUARIO LIKE '%" + usuario + "%' OR NOME LIKE '%" + nome + "%';";
+        sql = "SELECT * FROM USUARIOS WHERE USUARIO LIKE '%" + usuario + "%' OR NOME LIKE '%" + nome + "%';";
         try {
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
@@ -85,7 +86,7 @@ public class UsuarioController implements Initializable {
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e.getMessage());
                 }
             });
             txtNome.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -94,7 +95,7 @@ public class UsuarioController implements Initializable {
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e.getMessage());
                 }
             });
             SortedList<Usuario> sortedData = new SortedList<>(filteredData);
@@ -104,13 +105,13 @@ public class UsuarioController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
     public void adicionar(Usuario u) {
         conn = ConnectionFactory.getConnection();
-        sql = "INSERT INTO USUARIO VALUES(?, ?, ?, ?)";
+        sql = "INSERT INTO USUARIOS VALUES(?, ?, ?, ?)";
         try{
             stmt = conn.prepareStatement(sql);
             stmt.setString(2, u.getUsuario());
@@ -124,11 +125,10 @@ public class UsuarioController implements Initializable {
                     "O sistema não permite a existência de registros duplicados.");
             erro.setContentText("Cadastro não permitido: " + u.getUsuario() + " - " + u.getNome());
             erro.showAndWait();
-            txtId.setText("");
-            txtUsuario.setText("");
-            txtNome.setText("");
-            txtSenha.setText("");
+            limparCampos();
             txtUsuario.requestFocus();
+            ex.printStackTrace();
+            ex.getCause();
             throw new RuntimeException(ex);
         }
         ConnectionFactory.closeConnection(conn, stmt);
@@ -136,7 +136,7 @@ public class UsuarioController implements Initializable {
 
     public void editar(Usuario u) {
         conn = ConnectionFactory.getConnection();
-        sql = "UPDATE USUARIO SET USUARIO = ?, NOME = ?, SENHA = ? WHERE ID = ?";
+        sql = "UPDATE USUARIOS SET USUARIO = ?, NOME = ?, SENHA = ? WHERE ID = ?";
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, u.getUsuario());
@@ -151,11 +151,10 @@ public class UsuarioController implements Initializable {
                     "O sistema não permite a existência de registros duplicados.");
             erro.setContentText("Cadastro não permitido: " + u.getUsuario() + " - " + u.getNome());
             erro.showAndWait();
-            txtId.setText("");
-            txtUsuario.setText("");
-            txtNome.setText("");
-            txtSenha.setText("");
+            limparCampos();
             txtUsuario.requestFocus();
+            e.printStackTrace();
+            e.getCause();
             throw new RuntimeException(e);
         }
         ConnectionFactory.closeConnection(conn, stmt);
@@ -163,7 +162,7 @@ public class UsuarioController implements Initializable {
 
     public void remover(Usuario u) throws SQLException {
         conn = ConnectionFactory.getConnection();
-        sql = "DELETE FROM USUARIO WHERE ID = ?";
+        sql = "DELETE FROM USUARIOS WHERE ID = ?";
         stmt = conn.prepareStatement(sql);
         stmt.setInt(1, u.getId());
         stmt.execute();
@@ -173,7 +172,7 @@ public class UsuarioController implements Initializable {
 
     public ObservableList<Usuario> listarTodos() throws SQLException {
         conn = ConnectionFactory.getConnection();
-        sql = "SELECT * FROM USUARIO ORDER BY ID";
+        sql = "SELECT * FROM USUARIOS ORDER BY ID";
         stmt = conn.prepareStatement(sql);
         rs = stmt.executeQuery();
         List<Usuario> listaUsuarios = new ArrayList<>();
@@ -191,7 +190,7 @@ public class UsuarioController implements Initializable {
 
     public ObservableList<Usuario> buscar(String string) throws SQLException {
         conn = ConnectionFactory.getConnection();
-        sql = "SELECT * FROM USUARIO WHERE USUARIO LIKE '%" + string+ "%' OR NOME LIKE '%" + string + "%';";
+        sql = "SELECT * FROM USUARIOS WHERE USUARIO LIKE '%" + string+ "%' OR NOME LIKE '%" + string + "%';";
         stmt = conn.prepareStatement(sql);
         rs = stmt.executeQuery();
         List<Usuario> listaUsuarios = new ArrayList<>();
@@ -236,10 +235,7 @@ public class UsuarioController implements Initializable {
                 editar(usr);
             }
             atualizarTabela();
-            txtId.setText("");
-            txtUsuario.setText("");
-            txtNome.setText("");
-            txtSenha.setText("");
+            limparCampos();
             txtUsuario.requestFocus();
         }
     }
@@ -306,13 +302,12 @@ public class UsuarioController implements Initializable {
                                 if (response == ButtonType.OK) {
                                     try {
                                         remover(u);
-                                        txtId.setText("");
-                                        txtUsuario.setText("");
-                                        txtNome.setText("");
-                                        txtSenha.setText("");
+                                        limparCampos();
                                         txtUsuario.requestFocus();
                                         atualizarTabela();
                                     } catch (SQLException ex) {
+                                        ex.printStackTrace();
+                                        ex.getCause();
                                         throw new RuntimeException(ex);
                                     }
                                 }
@@ -355,5 +350,12 @@ public class UsuarioController implements Initializable {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             salvarUsuario();
         }
+    }
+
+    public void limparCampos(){
+        txtId.setText("");
+        txtUsuario.setText("");
+        txtNome.setText("");
+        txtSenha.setText("");
     }
 }

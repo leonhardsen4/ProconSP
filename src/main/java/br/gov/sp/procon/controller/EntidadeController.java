@@ -2,6 +2,7 @@
 
     import br.gov.sp.procon.model.Entidade;
     import br.gov.sp.procon.utils.ConnectionFactory;
+    import br.gov.sp.procon.view.TelaAcoesEntidade;
     import javafx.collections.FXCollections;
     import javafx.collections.ObservableList;
     import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@
 
     import javafx.scene.layout.Background;
     import javafx.scene.paint.Color;
+    import javafx.stage.Stage;
     import javafx.util.Callback;
     import java.net.URL;
     import java.sql.*;
@@ -21,22 +23,18 @@
     import java.util.ResourceBundle;
 
     public class EntidadeController implements Initializable {
-        @FXML
-        public Button btnCadastrar;
-        @FXML
-        public TextField txtEntidade;
-        @FXML
-        public TableView<Entidade> tblEntidades;
-        @FXML
-        public TableColumn<Entidade, Integer> colunaID;
-        @FXML
-        public TableColumn<Entidade, String> colunaNome;
-        @FXML
-        public TableColumn<Entidade, Integer> colunaEditar;
-        @FXML
-        public TableColumn<Entidade, Integer> colunaExcluir;
-        @FXML
-        public Label txtID;
+
+        @FXML public TextField txtId;
+        @FXML public TextField txtEntidade;
+        @FXML public Button btnCadastrar;
+        @FXML public Button btnLimpar;
+        @FXML public TableView<Entidade> tblEntidades;
+        @FXML public TableColumn<Entidade, Integer> colunaID;
+        @FXML public TableColumn<Entidade, String> colunaNome;
+        @FXML public TableColumn<Entidade, Integer> colunaAcoes;
+        @FXML public TableColumn<Entidade, Integer> colunaEditar;
+        @FXML public TableColumn<Entidade, Integer> colunaExcluir;
+
         Connection conn;
         PreparedStatement stmt;
         ResultSet rs;
@@ -45,7 +43,7 @@
 
         public void adicionar(Entidade e) {
             conn = ConnectionFactory.getConnection();
-            sql = "INSERT INTO ENTIDADE VALUES(?, ?)";
+            sql = "INSERT INTO ENTIDADES VALUES(?, ?)";
             try {
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(2, e.getNome());
@@ -57,16 +55,18 @@
                         "O sistema não permite a existência de registros duplicados.");
                 erro.setContentText("Cadastro não permitido: " + e.getNome());
                 erro.showAndWait();
-                txtEntidade.setText("");
+                limparCampos();
                 txtEntidade.requestFocus();
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
+                ex.getCause();
+                throw new RuntimeException(ex.getMessage());
             }
             ConnectionFactory.closeConnection(conn, stmt);
         }
 
         public void editar(Entidade e) {
             conn = ConnectionFactory.getConnection();
-            sql = "UPDATE ENTIDADE SET NOME = ? WHERE ID = ?";
+            sql = "UPDATE ENTIDADES SET NOME = ? WHERE ID = ?";
             try {
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, e.getNome());
@@ -79,16 +79,18 @@
                         "O sistema não permite a existência de registros duplicados.");
                 erro.setContentText("Cadastro não permitido: " + e.getNome());
                 erro.showAndWait();
-                txtEntidade.setText("");
+                limparCampos();
                 txtEntidade.requestFocus();
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
+                ex.getCause();
+                throw new RuntimeException(ex.getMessage());
             }
             ConnectionFactory.closeConnection(conn, stmt);
         }
 
         public void remover(Entidade e) throws SQLException {
             conn = ConnectionFactory.getConnection();
-            sql = "DELETE FROM ENTIDADE WHERE ID = ?";
+            sql = "DELETE FROM ENTIDADES WHERE ID = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, e.getId());
             stmt.execute();
@@ -97,7 +99,7 @@
 
         public ObservableList<Entidade> listarTodos() throws SQLException {
             conn = ConnectionFactory.getConnection();
-            sql = "SELECT * FROM ENTIDADE ORDER BY ID";
+            sql = "SELECT * FROM ENTIDADES ORDER BY ID";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             List<Entidade> listaEntidades = new ArrayList<>();
@@ -114,7 +116,7 @@
 
         public ObservableList<Entidade> buscar(String string) throws SQLException {
             conn = ConnectionFactory.getConnection();
-            sql = "SELECT * FROM ENTIDADE WHERE NOME LIKE '%" + string + "%';";
+            sql = "SELECT * FROM ENTIDADES WHERE NOME LIKE '%" + string + "%';";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             List<Entidade> listaEntidades = new ArrayList<>();
@@ -134,48 +136,90 @@
                 btnCadastrar.isDisabled();
                 txtEntidade.requestFocus();
             } else {
-                if (txtID.getText().isEmpty()) {
+                if (txtId.getText().isEmpty()) {
                     Entidade e = new Entidade();
                     e.setNome(nomeEntidade);
                     adicionar(e);
-                    atualizarTabela();
-                    txtEntidade.requestFocus();
-                    txtEntidade.setText("");
                 } else {
                     ent.setNome(nomeEntidade);
                     editar(ent);
-                    atualizarTabela();
-                    txtEntidade.requestFocus();
-                    txtEntidade.setText("");
-                    txtID.setText("");
                 }
+                atualizarTabela();
+                limparCampos();
+                txtEntidade.requestFocus();
             }
         }
 
         public void editarEntidade(Entidade entidade) {
-            txtID.setText(String.valueOf(ent.getId()));
+            txtId.setText(String.valueOf(ent.getId()));
             txtEntidade.setText(entidade.getNome());
             txtEntidade.requestFocus();
         }
 
         public void initialize(URL location, ResourceBundle resources) {
+            colunaAcoes.setMinWidth(70.0);
+            colunaAcoes.setMaxWidth(70.0);
             colunaEditar.setMinWidth(70.0);
             colunaEditar.setMaxWidth(70.0);
             colunaExcluir.setMinWidth(70.0);
             colunaExcluir.setMaxWidth(70.0);
+            colunaAcoes.setStyle("-fx-alignment: CENTER");
             colunaEditar.setStyle("-fx-alignment: CENTER");
             colunaExcluir.setStyle("-fx-alignment: CENTER");
             colunaID.isSortable();
             colunaNome.isSortable();
             colunaID.setCellValueFactory(new PropertyValueFactory<>("id"));
             colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+            adicionarBotaoAcoes();
             adicionarBotaoEditar();
             adicionarBotaoExcluir();
             try {
                 atualizarTabela();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+                e.getCause();
+                throw new RuntimeException(e.getMessage());
             }
+        }
+
+        public void adicionarBotaoAcoes() {
+            Callback<TableColumn<Entidade, Integer>, TableCell<Entidade, Integer>> cellFactory = new Callback<>() {
+                @Override
+                public TableCell<Entidade, Integer> call(final TableColumn<Entidade, Integer> param) {
+                    return new TableCell<>() {
+                        private final Button btnAcoes = new Button("Ações");
+
+                        {
+                            btnAcoes.setOnAction((ActionEvent event) -> {
+                                try {
+                                    ent = getTableView().getItems().get(getIndex());
+                                    System.out.println("Ações: " + ent.getNome());
+                                    abrirAcoesEntidade();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    e.getCause();
+                                    throw new RuntimeException(e.getMessage());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void updateItem(Integer item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                btnAcoes.setText("Ações");
+                                btnAcoes.setCursor(Cursor.HAND);
+                                btnAcoes.setBackground(Background.fill(Color.rgb(148, 0, 211)));
+                                btnAcoes.setStyle("-fx-text-fill: #FFFFFF");
+                                setGraphic(btnAcoes);
+                            }
+                        }
+                    };
+                }
+            };
+            colunaAcoes.setCellFactory(cellFactory);
         }
 
         public void adicionarBotaoEditar() {
@@ -199,7 +243,7 @@
                                 setGraphic(null);
                             } else {
                                 btnEditar.setText("Editar");
-                                btnEditar.setCursor(Cursor.CLOSED_HAND);
+                                btnEditar.setCursor(Cursor.HAND);
                                 btnEditar.setBackground(Background.fill(Color.rgb(255, 140, 0)));
                                 btnEditar.setStyle("-fx-text-fill: #FFFFFF");
                                 setGraphic(btnEditar);
@@ -229,10 +273,12 @@
                                     if (response == ButtonType.OK) {
                                         try {
                                             remover(e);
-                                            txtEntidade.setText("");
+                                            limparCampos();
                                             atualizarTabela();
                                         } catch (SQLException ex) {
-                                            throw new RuntimeException(ex);
+                                            ex.printStackTrace();
+                                            ex.getCause();
+                                            throw new RuntimeException(ex.getMessage());
                                         }
                                     }
                                 });
@@ -246,7 +292,7 @@
                                 setGraphic(null);
                             } else {
                                 btnExcluir.setText("Excluir");
-                                btnExcluir.setCursor(Cursor.CLOSED_HAND);
+                                btnExcluir.setCursor(Cursor.HAND);
                                 btnExcluir.setBackground(Background.fill(Color.rgb(220, 20, 60)));
                                 btnExcluir.setStyle("-fx-text-fill: #FFFFFF");
                                 setGraphic(btnExcluir);
@@ -267,13 +313,20 @@
                 try {
                     tblEntidades.setItems(buscar(newValue));
                 } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
+                    e.getCause();
+                    throw new RuntimeException(e.getMessage());
                 }
             });
         }
 
-        public void selecaoEntidade() {
-            Entidade e = tblEntidades.getSelectionModel().getSelectedItem();
-            System.out.println(e.getId() + " - " + e.getNome());
+        public void limparCampos() {
+            txtId.setText("");
+            txtEntidade.setText("");
+        }
+
+        private void abrirAcoesEntidade() throws Exception {
+            TelaAcoesEntidade tae = new TelaAcoesEntidade();
+            tae.start(new Stage());
         }
     }

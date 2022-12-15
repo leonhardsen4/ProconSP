@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="telaEndereco" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.gov.sp.procon.controller.EnderecoController">
+<AnchorPane fx:id="telaAcoesEntidade" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.gov.sp.procon.controller.AcoesEntidadeController">
    <Pane prefHeight="500.0" prefWidth="900.0">
       <TextField fx:id="txtIdEntidade" disable="true" editable="false" layoutX="16.0" layoutY="19.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
       <TextField fx:id="txtEntidade" disable="true" editable="false" layoutX="83.0" layoutY="19.0" prefHeight="26.0" prefWidth="802.0" promptText="Entidade" />
@@ -35,8 +35,8 @@
          <columns>
             <TableColumn fx:id="tcID" prefWidth="50.0" text="ID" />
             <TableColumn fx:id="tcEndereco" prefWidth="656.0" text="Endereço" />
-            <TableColumn fx:id="tcEditar" prefWidth="80.0" text="Editar" />
-            <TableColumn fx:id="tcExcluir" prefWidth="80.0" text="Excluir" />
+            <TableColumn fx:id="tcEditar" text="Editar" />
+            <TableColumn fx:id="tcExcluir" text="Excluir" />
          </columns>
       </TableView>
       <Separator layoutX="16.0" layoutY="46.0" prefHeight="26.0" prefWidth="869.0" />
