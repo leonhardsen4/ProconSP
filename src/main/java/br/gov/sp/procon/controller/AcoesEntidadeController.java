@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class AcoesEntidadeController implements Initializable {
 
-    @FXML public AnchorPane telaAcoesEntidade;
+    @FXML public AnchorPane telaAcEntidade;
     @FXML public TextField txtIdEntidade;
     @FXML public TextField txtEntidade;
     @FXML public TextField txtID;
@@ -25,11 +25,13 @@ public class AcoesEntidadeController implements Initializable {
     @FXML public TextField txtMunicipio;
     @FXML public ComboBox<String> cmbUF;
     @FXML public Button btnSalvar;
+    @FXML public Button btnLimpar;
     @FXML public TableView<Endereco> tblEndereco;
     @FXML public TableColumn<Endereco, Integer> tcID;
     @FXML public TableColumn<Endereco, String> tcEndereco;
     @FXML public TableColumn<Endereco, Integer> tcEditar;
     @FXML public TableColumn<Endereco, Integer> tcExcluir;
+
 
     public void adicionar() throws SQLException {
         

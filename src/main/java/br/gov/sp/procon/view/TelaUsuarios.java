@@ -7,10 +7,6 @@ import javafx.stage.Stage;
 
 public class TelaUsuarios extends Application {
 
-    public static void main(String[] args){
-        launch();
-    }
-
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("Usuarios.fxml"));

@@ -8,10 +8,6 @@ import javafx.stage.Stage;
 
 public class TelaPrincipal extends Application {
 
-    public static void main(String[] args){
-        launch(TelaPrincipal.class);
-    }
-
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("TelaPrincipal.fxml"));
@@ -19,7 +15,7 @@ public class TelaPrincipal extends Application {
         double height = Screen.getPrimary().getVisualBounds().getHeight();
         Scene scene = new Scene(fxmlLoader.load(), width, height);
         stage.setScene(scene);
-        stage.setTitle("PROCON.SP/NCA");
+        stage.setTitle("PROCON/SP - NÚCLEO DE COMUNICAÇÕES ADMINISTRATIVAS");
         stage.setMaximized(true);
         stage.show();
     }
