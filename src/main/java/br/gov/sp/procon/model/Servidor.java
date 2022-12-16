@@ -2,7 +2,7 @@ package br.gov.sp.procon.model;
 
 public class Servidor extends Pessoa {
 
-    private int idSetor;
+    private int idUnidade;
     private Enum<Cargo> cargo;
 
     public Servidor() {
@@ -12,19 +12,19 @@ public class Servidor extends Pessoa {
                     String nome,
                     String telefone,
                     String email,
-                    int idSetor,
+                    int idUnidade,
                     Enum<Cargo> cargo) {
         super(id, nome, telefone, email);
-        this.idSetor = idSetor;
+        this.idUnidade = idUnidade;
         this.cargo = cargo;
     }
 
-    public int getIdSetor() {
-        return idSetor;
+    public int getidUnidade() {
+        return idUnidade;
     }
 
-    public void setIdSetor(int idSetor) {
-        this.idSetor = idSetor;
+    public void setidUnidade(int idUnidade) {
+        this.idUnidade = idUnidade;
     }
 
     public Enum<Cargo> getCargo() {
@@ -35,11 +35,4 @@ public class Servidor extends Pessoa {
         this.cargo = cargo;
     }
 
-    @Override
-    public String toString() {
-        return "Servidor{" +
-                "idSetor=" + idSetor +
-                ", cargo=" + cargo +
-                '}';
-    }
 }

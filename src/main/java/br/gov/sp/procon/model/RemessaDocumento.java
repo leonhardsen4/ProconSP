@@ -7,17 +7,17 @@ public class RemessaDocumento {
     private int id;
     private int dataRemessa;
     private Usuario usuario;
-    private Setor setor;
+    private Unidade unidade;
     private List<Documento> listaDocumentos;
 
     public RemessaDocumento() {
     }
 
-    public RemessaDocumento(int id, int dataRemessa, Usuario usuario, Setor setor, List<Documento> listaDocumentos) {
+    public RemessaDocumento(int id, int dataRemessa, Usuario usuario, Unidade unidade, List<Documento> listaDocumentos) {
         this.id = id;
         this.dataRemessa = dataRemessa;
         this.usuario = usuario;
-        this.setor = setor;
+        this.unidade = unidade;
         this.listaDocumentos = listaDocumentos;
     }
 
@@ -45,12 +45,12 @@ public class RemessaDocumento {
         this.usuario = usuario;
     }
 
-    public Setor getSetor() {
-        return setor;
+    public Unidade getSetor() {
+        return unidade;
     }
 
-    public void setSetor(Setor setor) {
-        this.setor = setor;
+    public void setSetor(Unidade unidade) {
+        this.unidade = unidade;
     }
 
     public List<Documento> getListaDocumentos() {
@@ -67,7 +67,7 @@ public class RemessaDocumento {
                 "id=" + id +
                 ", dataRemessa=" + dataRemessa +
                 ", usuario=" + usuario +
-                ", setor=" + setor +
+                ", unidade=" + unidade +
                 ", listaDocumentos=" + listaDocumentos +
                 '}';
     }

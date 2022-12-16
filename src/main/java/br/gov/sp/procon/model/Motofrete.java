@@ -13,7 +13,7 @@ public class Motofrete {
     private LocalDateTime horaServico;
     private LocalDateTime dataConclusao;
     private LocalDateTime horaConclusao;
-    private Setor setor;
+    private Unidade unidade;
     private Servidor servidor;
     private Entidade destinatario;
     private List<Documento> listaDocumento;
@@ -23,7 +23,7 @@ public class Motofrete {
     public Motofrete() {
     }
 
-    public Motofrete(int requisicao, Usuario idServidor, LocalDateTime dataCadastro, LocalDateTime horaCadastro, LocalDateTime dataServico, LocalDateTime horaServico, LocalDateTime dataConclusao, LocalDateTime horaConclusao, Setor setor, Servidor servidor, Entidade destinatario, List<Documento> listaDocumento, Portador portador, String observacoes) {
+    public Motofrete(int requisicao, Usuario idServidor, LocalDateTime dataCadastro, LocalDateTime horaCadastro, LocalDateTime dataServico, LocalDateTime horaServico, LocalDateTime dataConclusao, LocalDateTime horaConclusao, Unidade unidade, Servidor servidor, Entidade destinatario, List<Documento> listaDocumento, Portador portador, String observacoes) {
         this.requisicao = requisicao;
         this.idServidor = idServidor;
         this.dataCadastro = dataCadastro;
@@ -32,7 +32,7 @@ public class Motofrete {
         this.horaServico = horaServico;
         this.dataConclusao = dataConclusao;
         this.horaConclusao = horaConclusao;
-        this.setor = setor;
+        this.unidade = this.unidade;
         this.servidor = servidor;
         this.destinatario = destinatario;
         this.listaDocumento = listaDocumento;
@@ -104,12 +104,12 @@ public class Motofrete {
         this.horaConclusao = horaConclusao;
     }
 
-    public Setor getSetor() {
-        return setor;
+    public Unidade getUnidade() {
+        return unidade;
     }
 
-    public void setSetor(Setor setor) {
-        this.setor = setor;
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
     }
 
     public Servidor getServidor() {
@@ -163,7 +163,7 @@ public class Motofrete {
                 ", horaServico=" + horaServico +
                 ", dataConclusao=" + dataConclusao +
                 ", horaConclusao=" + horaConclusao +
-                ", setor=" + setor +
+                ", unidade=" + unidade +
                 ", servidor=" + servidor +
                 ", destinatario=" + destinatario +
                 ", listaDocumento=" + listaDocumento +

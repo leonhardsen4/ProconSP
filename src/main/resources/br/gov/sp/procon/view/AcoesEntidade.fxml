@@ -18,62 +18,125 @@
       <TextField fx:id="txtIdEntidade" disable="true" editable="false" layoutX="16.0" layoutY="19.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
       <TextField fx:id="txtEntidade" disable="true" editable="false" layoutX="83.0" layoutY="19.0" prefHeight="26.0" prefWidth="802.0" promptText="Entidade" />
       <Separator layoutX="16.0" layoutY="46.0" prefHeight="26.0" prefWidth="869.0" />
-       <TabPane layoutX="16.0" layoutY="72.0" prefHeight="411.0" prefWidth="869.0"
-                style="-fx-border-style: solid; -fx-border-color: #c0c0c0;" tabClosingPolicy="UNAVAILABLE">
-           <Tab text="Unidades">
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
-           </Tab>
-           <Tab text="Endereços">
+       <TabPane layoutX="16.0" layoutY="72.0" prefHeight="411.0" prefWidth="869.0" style="-fx-border-style: solid; -fx-border-color: #c0c0c0;" tabClosingPolicy="UNAVAILABLE">
+           <Tab fx:id="tabEndereco" text="Endereços">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                   <TextField fx:id="txtID" disable="true" editable="false" layoutX="14.0" layoutY="14.0"
-                              prefHeight="26.0" prefWidth="60.0" promptText="ID"/>
-                   <TextField fx:id="txtCEP" layoutX="81.0" layoutY="14.0" prefHeight="26.0" prefWidth="87.0"
-                              promptText="CEP"/>
-                   <TextField fx:id="txtLogradouro" layoutX="176.0" layoutY="14.0" prefHeight="26.0"
-                              prefWidth="434.0" promptText="Logradouro"/>
-                   <TextField fx:id="txtNumero" layoutX="618.0" layoutY="14.0" prefHeight="26.0"
-                              prefWidth="67.0" promptText="Número"/>
-                   <TextField fx:id="txtComplemento" layoutX="695.0" layoutY="14.0" prefHeight="26.0"
-                              prefWidth="160.0" promptText="Complemento"/>
-                   <TextField fx:id="txtBairro" layoutX="14.0" layoutY="47.0" prefHeight="26.0"
-                              prefWidth="279.0" promptText="Bairro"/>
-                   <TextField fx:id="txtMunicipio" layoutX="303.0" layoutY="47.0" prefHeight="26.0"
-                              prefWidth="331.0" promptText="Município"/>
-                   <Button fx:id="btnSalvar" layoutX="717.0" layoutY="47.0" mnemonicParsing="false"
-                           prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #08457e;"
-                           text="Salvar" textFill="WHITE">
+                   <TextField fx:id="txtIdEndereco" disable="true" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
+                   <TextField fx:id="txtCEP" layoutX="81.0" layoutY="14.0" prefHeight="26.0" prefWidth="87.0" promptText="CEP" />
+                   <TextField fx:id="txtLogradouro" layoutX="176.0" layoutY="14.0" prefHeight="26.0" prefWidth="434.0" promptText="Logradouro" />
+                   <TextField fx:id="txtNumero" layoutX="618.0" layoutY="14.0" prefHeight="26.0" prefWidth="67.0" promptText="Número" />
+                   <TextField fx:id="txtComplemento" layoutX="695.0" layoutY="14.0" prefHeight="26.0" prefWidth="160.0" promptText="Complemento" />
+                   <TextField fx:id="txtBairro" layoutX="14.0" layoutY="47.0" prefHeight="26.0" prefWidth="282.0" promptText="Bairro" />
+                   <TextField fx:id="txtMunicipio" layoutX="303.0" layoutY="47.0" prefHeight="26.0" prefWidth="331.0" promptText="Município" />
+                   <ComboBox fx:id="cmbUF" layoutX="642.0" layoutY="47.0" prefHeight="26.0" prefWidth="68.0" promptText="UF" />
+                   <Button fx:id="btnSalvarEndereco" layoutX="717.0" layoutY="47.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
                        <cursor>
-                           <Cursor fx:constant="HAND"/>
+                           <Cursor fx:constant="HAND" />
                        </cursor>
                        <font>
-                           <Font size="13.0"/>
+                           <Font size="13.0" />
                        </font>
                    </Button>
-                   <TableView fx:id="tblEndereco" layoutX="13.0" layoutY="82.0" prefHeight="281.0"
-                              prefWidth="843.0">
+                   <Button fx:id="btnLimparEndereco" layoutX="789.0" layoutY="47.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #3CB371;" text="Limpar" textFill="WHITE">
+                       <cursor>
+                           <Cursor fx:constant="HAND" />
+                       </cursor>
+                       <font>
+                           <Font size="13.0" />
+                       </font>
+                   </Button>
+                   <TableView fx:id="tblEndereco" layoutX="13.0" layoutY="82.0" prefHeight="281.0" prefWidth="843.0">
                        <columns>
-                           <TableColumn fx:id="tcID" prefWidth="50.0" text="ID"/>
-                           <TableColumn fx:id="tcEndereco" prefWidth="622.0" text="Endereço"/>
-                           <TableColumn fx:id="tcEditar" prefWidth="88.0" text="Editar"/>
-                           <TableColumn fx:id="tcExcluir" prefWidth="106.0" text="Excluir"/>
+                           <TableColumn fx:id="tcID" prefWidth="50.0" text="ID" />
+                           <TableColumn fx:id="tcEndereco" prefWidth="622.0" text="Endereço" />
+                           <TableColumn fx:id="tcEditar" prefWidth="88.0" text="Editar" />
+                           <TableColumn fx:id="tcExcluir" prefWidth="106.0" text="Excluir" />
                        </columns>
                    </TableView>
-                   <ComboBox fx:id="cmbUF" layoutX="642.0" layoutY="47.0" prefHeight="26.0" prefWidth="68.0"
-                             promptText="UF"/>
-                   <Button fx:id="btnLimpar" layoutX="789.0" layoutY="47.0" mnemonicParsing="false"
-                           prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #3CB371;"
-                           text="Limpar" textFill="WHITE">
-                       <cursor>
-                           <Cursor fx:constant="HAND"/>
-                       </cursor>
-                       <font>
-                           <Font size="13.0"/>
-                       </font>
-                   </Button>
                </AnchorPane>
            </Tab>
-           <Tab text="Pessoas">
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+           <Tab fx:id="tabUnidade" text="Unidades">
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                   <Button fx:id="btnCriarUnidade" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: #08457e;" text="Criar Unidade" textFill="WHITE">
+                       <cursor>
+                           <Cursor fx:constant="HAND" />
+                       </cursor>
+                       <font>
+                           <Font size="13.0" />
+                       </font>
+                   </Button>
+                   <TextField fx:id="txtIdUnidade" disable="true" editable="false" layoutX="134.0" layoutY="14.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
+                   <TextField fx:id="txtUnidade" layoutX="201.0" layoutY="14.0" prefHeight="26.0" prefWidth="652.0" promptText="Unidade" />
+                   <ComboBox fx:id="cmbEnderecoUnidade" layoutX="14.0" layoutY="48.0" prefHeight="26.0" prefWidth="693.0" promptText="Endereço" />
+                   <Button fx:id="btnSalvarUnidade" layoutX="714.0" layoutY="48.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
+                       <cursor>
+                           <Cursor fx:constant="HAND" />
+                       </cursor>
+                       <font>
+                           <Font size="13.0" />
+                       </font>
+                   </Button>
+                   <Button fx:id="btnLimparUnidade" layoutX="787.0" layoutY="48.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #3CB371;" text="Limpar" textFill="WHITE">
+                       <cursor>
+                           <Cursor fx:constant="HAND" />
+                       </cursor>
+                       <font>
+                           <Font size="13.0" />
+                       </font>
+                   </Button>
+                   <TableView fx:id="tblUnidade" layoutX="14.0" layoutY="84.0" prefHeight="281.0" prefWidth="839.0">
+                       <columns>
+                           <TableColumn fx:id="tcIdUnidade" prefWidth="34.0" text="ID" />
+                           <TableColumn fx:id="tcUnidade" prefWidth="249.0" text="Unidade" />
+                           <TableColumn fx:id="tcEnderecoUnidade" prefWidth="415.0" text="Endereço" />
+                           <TableColumn fx:id="tcEditarUnidade" prefWidth="72.0" text="Editar" />
+                           <TableColumn fx:id="tcExcluirUnidade" minWidth="4.0" prefWidth="68.0" text="Excluir" />
+                       </columns>
+                   </TableView>
+               </AnchorPane>
+           </Tab>
+           <Tab fx:id="tabPessoa" text="Pessoas">
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                   <Button fx:id="btnAdicionarPessoa" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #08457e;" text="Adicionar Pessoa" textFill="WHITE">
+                       <cursor>
+                           <Cursor fx:constant="HAND" />
+                       </cursor>
+                       <font>
+                           <Font size="13.0" />
+                       </font>
+                   </Button>
+                   <TextField fx:id="tctIdPessoa" disable="true" editable="false" layoutX="150.0" layoutY="14.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
+                   <TextField fx:id="txtNomePessoa" layoutX="217.0" layoutY="14.0" prefHeight="26.0" prefWidth="636.0" promptText="Nome" />
+                   <TextField fx:id="txtTelefonePessoa" layoutX="14.0" layoutY="48.0" prefHeight="26.0" prefWidth="196.0" promptText="Telefone" />
+                   <TextField fx:id="txtEmailPessoa" layoutX="217.0" layoutY="48.0" prefHeight="26.0" prefWidth="636.0" promptText="E-mail" />
+                   <ComboBox fx:id="cmbCargo" layoutX="14.0" layoutY="82.0" prefHeight="26.0" prefWidth="342.0" promptText="Cargo" />
+                   <ComboBox fx:id="cmbUnidadePessoa" layoutX="362.0" layoutY="82.0" prefHeight="26.0" prefWidth="347.0" promptText="Unidade" />
+                   <TableView fx:id="tblPessoa" layoutX="11.0" layoutY="120.0" prefHeight="238.0" prefWidth="843.0">
+                       <columns>
+                           <TableColumn fx:id="tcIdPessoa" prefWidth="34.0" text="ID" />
+                           <TableColumn fx:id="tcNomePessoa" prefWidth="249.0" text="Nome" />
+                           <TableColumn fx:id="tcUnidadePessoa" prefWidth="415.0" text="Unidade" />
+                           <TableColumn fx:id="tcEditarPessoa" prefWidth="72.0" text="Editar" />
+                           <TableColumn fx:id="tcExcluirPessoa" minWidth="4.0" prefWidth="72.0" text="Excluir" />
+                       </columns>
+                   </TableView>
+               <Button fx:id="btnLimparPessoa" layoutX="787.0" layoutY="82.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #3CB371;" text="Limpar" textFill="WHITE">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <font>
+                     <Font size="13.0" />
+                  </font>
+               </Button>
+               <Button fx:id="btnSalvarPessoa" layoutX="715.0" layoutY="82.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <font>
+                     <Font size="13.0" />
+                  </font>
+               </Button>
+               </AnchorPane>
            </Tab>
        </TabPane>
    </Pane>

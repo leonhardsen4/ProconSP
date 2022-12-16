@@ -7,12 +7,12 @@ public class Entidade {
     private int id;
     private String nome;
     private List<Endereco> listaEndereco;
-    private List<Setor> listaSetores;
+    private List<Unidade> listaSetores;
 
     public Entidade() {
     }
 
-    public Entidade(int id, String nome, List<Endereco> listaEndereco, List<Setor> listaSetores) {
+    public Entidade(int id, String nome, List<Endereco> listaEndereco, List<Unidade> listaSetores) {
         this.id = id;
         this.nome = nome;
         this.listaEndereco = listaEndereco;
@@ -43,22 +43,12 @@ public class Entidade {
         this.listaEndereco = listaEndereco;
     }
 
-    public List<Setor> getListaSetores() {
+    public List<Unidade> getListaSetores() {
         return listaSetores;
     }
 
-    public void setListaSetores(List<Setor> listaSetores) {
+    public void setListaSetores(List<Unidade> listaSetores) {
         this.listaSetores = listaSetores;
-    }
-
-    @Override
-    public String toString() {
-        return "Entidade{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", listaEndereco=" + listaEndereco +
-                ", listaSetores=" + listaSetores +
-                '}';
     }
 
 }
