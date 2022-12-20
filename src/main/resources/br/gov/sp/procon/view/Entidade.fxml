@@ -29,8 +29,7 @@
             <Cursor fx:constant="HAND"/>
          </cursor>
       </Button>
-      <TableView fx:id="tblEntidades" layoutX="35.0" layoutY="74.0" prefHeight="495.0" prefWidth="700.0"
-                 tableMenuButtonVisible="true">
+      <TableView fx:id="tblEntidades" layoutX="35.0" layoutY="74.0" prefHeight="495.0" prefWidth="700.0">
          <columns>
             <TableColumn fx:id="colunaID" maxWidth="70.0" minWidth="30.0" text="ID"/>
             <TableColumn fx:id="colunaNome" prefWidth="410.0" text="Nome"/>

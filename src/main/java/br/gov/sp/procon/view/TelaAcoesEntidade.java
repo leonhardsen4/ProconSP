@@ -13,7 +13,7 @@ public class TelaAcoesEntidade extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 900, 500);
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setTitle("Ações de Entidade");
+        stage.setTitle("AÇÕES DE ENTIDADE");
         stage.show();
     }
 

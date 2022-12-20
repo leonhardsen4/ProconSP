@@ -52,47 +52,47 @@ public class Endereco {
     }
 
     public String getLogradouro() {
-        return logradouro;
+        return logradouro.toUpperCase();
     }
 
     public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
+        this.logradouro = logradouro.toUpperCase();
     }
 
     public String getNumero() {
-        return numero;
+        return numero.toUpperCase();
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        this.numero = numero.toUpperCase();
     }
 
     public String getComplemento() {
-        return complemento;
+        return complemento.toUpperCase();
     }
 
     public void setComplemento(String complemento) {
-        this.complemento = complemento;
+        this.complemento = complemento.toUpperCase();
     }
 
     public String getBairro() {
-        return bairro;
+        return bairro.toUpperCase();
     }
 
     public void setBairro(String bairro) {
-        this.bairro = bairro;
+        this.bairro = bairro.toUpperCase();
     }
 
     public String getMunicipio() {
-        return municipio;
+        return municipio.toUpperCase();
     }
 
     public void setMunicipio(String municipio) {
-        this.municipio = municipio;
+        this.municipio = municipio.toUpperCase();
     }
 
     public String getUf() {
-        return uf;
+        return uf.toUpperCase();
     }
 
     public void setUf(String uf) {
@@ -101,16 +101,6 @@ public class Endereco {
 
     @Override
     public String toString() {
-        return "Endereco{" +
-                "id=" + id +
-                ", idEntidade=" + idEntidade +
-                ", cep='" + cep + '\'' +
-                ", logradouro='" + logradouro + '\'' +
-                ", numero='" + numero + '\'' +
-                ", complemento='" + complemento + '\'' +
-                ", bairro='" + bairro + '\'' +
-                ", municipio='" + municipio + '\'' +
-                ", uf='" + uf + '\'' +
-                '}';
+        return logradouro + ", " + numero + ", " + complemento + ", " + bairro + ", " + municipio  + ", " + uf + ", " + cep;
     }
 }
