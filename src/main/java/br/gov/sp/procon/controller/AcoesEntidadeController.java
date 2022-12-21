@@ -91,7 +91,7 @@ public class AcoesEntidadeController implements Initializable {
     String sql;
     static Endereco end;
 
-    public void adicionar(Endereco e) throws SQLException {
+    public void adicionarEndereco(Endereco e) {
         conn = ConnectionFactory.getConnection();
         sql = "INSERT INTO ENDERECOS VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -126,7 +126,33 @@ public class AcoesEntidadeController implements Initializable {
         ConnectionFactory.closeConnection(conn, stmt);
     }
 
-    public void editar(Endereco e) throws SQLException {
+    public void adicionarUnidade(Unidade u) {
+        conn = ConnectionFactory.getConnection();
+        sql = "INSERT INTO UNIDADES VALUES(?, ?, ?, ?)";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(2, u.getIdEntidade());
+            stmt.setInt(3, u.getIdEnderecoEntidade());
+            stmt.setString(4, u.getUnidade());
+            stmt.execute();
+        } catch (SQLException ex) {
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setTitle("Erro");
+            erro.setContentText("A unidade não foi salva pois existem campos obrigatórios em branco");
+            erro.showAndWait();
+            if(txtUnidade.getText().isEmpty()){
+                txtUnidade.requestFocus();
+            } else if (cmbEnderecoUnidade.getSelectionModel().isEmpty()){
+                cmbEnderecoUnidade.requestFocus();
+            }
+            ex.printStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        }
+        ConnectionFactory.closeConnection(conn, stmt);
+    }
+
+    public void editarEndereco(Endereco e) {
         conn = ConnectionFactory.getConnection();
         sql = "UPDATE ENDERECOS SET " +
                 "CEP = ?, " +
@@ -168,16 +194,63 @@ public class AcoesEntidadeController implements Initializable {
         ConnectionFactory.closeConnection(conn, stmt);
     }
 
-    public void remover(Endereco e) throws SQLException {
+    public void editarUnidade(Unidade u) {
         conn = ConnectionFactory.getConnection();
-        sql = "DELETE FROM ENDERECOS WHERE ID = ?";
-        stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, e.getId());
-        stmt.execute();
+        sql = "UPDATE UNIDADES SET UNIDADE = ?, ID_ENDERECO_ENTIDADE = ? WHERE ID = ?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, u.getUnidade());
+            stmt.setInt(2, u.getIdEnderecoEntidade());
+            stmt.setInt(3, u.getId());
+            stmt.execute();
+        } catch (SQLException ex) {
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setTitle("Erro");
+            erro.setContentText("A unidade não foi salva pois existem campos obrigatórios em branco");
+            erro.showAndWait();
+            if (txtUnidade.getText().isEmpty()) {
+                txtUnidade.requestFocus();
+            } else if (cmbEnderecoUnidade.getSelectionModel().isEmpty()) {
+                cmbEnderecoUnidade.requestFocus();
+            }
+            ex.printStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        }
         ConnectionFactory.closeConnection(conn, stmt);
     }
 
-    public ObservableList<Endereco> listarTodos() throws SQLException {
+    public void removerEndereco(Endereco e) {
+        conn = ConnectionFactory.getConnection();
+        sql = "DELETE FROM ENDERECOS WHERE ID = ?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, e.getId());
+            stmt.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        }
+        ConnectionFactory.closeConnection(conn, stmt);
+    }
+
+    public void removerUnidade(Unidade u){
+        conn = ConnectionFactory.getConnection();
+        sql = "DELETE FROM UNIDADES WHERE ID = ?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, u.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            throw new RuntimeException(e.getMessage());
+        }
+        ConnectionFactory.closeConnection(conn, stmt);
+    }
+
+    public ObservableList<Endereco> listarEnderecos() throws SQLException {
         int idEntidade = Integer.parseInt(txtIdEntidade.getText());
         conn = ConnectionFactory.getConnection();
         sql = "SELECT * FROM ENDERECOS WHERE ID_ENTIDADE = " + idEntidade + " ORDER BY ID";
@@ -200,7 +273,7 @@ public class AcoesEntidadeController implements Initializable {
         return FXCollections.observableArrayList(listaEnderecos);
     }
 
-    public ObservableList<Endereco> buscar(String string) throws SQLException {
+    public ObservableList<Endereco> buscarEnderecos(String string) throws SQLException {
         int idEntidade = Integer.parseInt(txtIdEntidade.getText());
         conn = ConnectionFactory.getConnection();
         sql = "SELECT * FROM ENDERECOS WHERE ID_ENTIDADE = '" + idEntidade + "' AND LOGRADOURO LIKE '%" + string + "%';";
@@ -308,7 +381,7 @@ public class AcoesEntidadeController implements Initializable {
                 e.setBairro(txtBairro.getText());
                 e.setMunicipio(txtMunicipio.getText());
                 e.setUf(cmbUF.getSelectionModel().getSelectedItem());
-                adicionar(e);
+                adicionarEndereco(e);
             } else {
                 end.setCep(txtCEP.getText());
                 end.setLogradouro(txtLogradouro.getText());
@@ -317,7 +390,7 @@ public class AcoesEntidadeController implements Initializable {
                 end.setBairro(txtBairro.getText());
                 end.setMunicipio(txtMunicipio.getText());
                 end.setUf(cmbUF.getSelectionModel().getSelectedItem());
-                editar(end);
+                editarEndereco(end);
             }
             atualizarTabela();
             limparCampos();
@@ -335,7 +408,7 @@ public class AcoesEntidadeController implements Initializable {
                     {
                         btnEditar.setOnAction((ActionEvent event) -> {
                             end = getTableView().getItems().get(getIndex());
-                            editarEndereco(end);
+                            edicaoEndereco(end);
                         });
                     }
 
@@ -358,7 +431,7 @@ public class AcoesEntidadeController implements Initializable {
         tcEditar.setCellFactory(cellFactory);
     }
 
-    public void editarEndereco(Endereco endereco) {
+    public void edicaoEndereco(Endereco endereco) {
         txtIdEndereco.setText(String.valueOf(endereco.getId()));
         txtCEP.setText(endereco.getCep());
         txtLogradouro.setText(endereco.getLogradouro());
@@ -385,7 +458,7 @@ public class AcoesEntidadeController implements Initializable {
                             alert.showAndWait().ifPresent(response -> {
                                 if (response == ButtonType.OK) {
                                     try {
-                                        remover(e);
+                                        removerEndereco(e);
                                         limparCampos();
                                         txtCEP.requestFocus();
                                         atualizarTabela();
@@ -421,7 +494,7 @@ public class AcoesEntidadeController implements Initializable {
     public void buscaEndereco() {
         txtLogradouro.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                tblEndereco.setItems(buscar(newValue));
+                tblEndereco.setItems(buscarEnderecos(newValue));
             } catch (SQLException e) {
                 e.printStackTrace();
                 e.getCause();
@@ -431,7 +504,7 @@ public class AcoesEntidadeController implements Initializable {
     }
 
     public void atualizarTabela() throws SQLException {
-        tblEndereco.setItems(listarTodos());
+        tblEndereco.setItems(listarEnderecos());
     }
 
     public void limparCampos() {
@@ -493,30 +566,30 @@ public class AcoesEntidadeController implements Initializable {
         }
     }
 
-    public void mascaraCEP() {
-            String val = "";
-            txtCEP.setOnKeyTyped((KeyEvent event) -> {
-                if(!"0123456789".contains(event.getCharacter())){
-                    event.consume();
-                }
-                if(event.getCharacter().trim().length()==0){ // apagando
-                    if(txtCEP.getText().length()==6){
-                        txtCEP.setText(txtCEP.getText().substring(0,5));
-                        txtCEP.positionCaret(txtCEP.getText().length());
-                    }
-                }else{ // escrevendo
-                    if(txtCEP.getText().length()==9)event.consume();
-                    if(txtCEP.getText().length()==5){
-                        txtCEP.setText(txtCEP.getText()+"-");
-                        txtCEP.positionCaret(txtCEP.getText().length());
-                    }
-                }
-            });
-            txtCEP.setOnKeyReleased((KeyEvent evt) -> {
-                if(!txtCEP.getText().matches("\\d-*")){
-                    txtCEP.setText(txtCEP.getText().replaceAll("[^\\d-]", ""));
-                    txtCEP.positionCaret(txtCEP.getText().length());
-                }
-            });
-    }
+//    public void mascaraCEP() {
+//            String val = "";
+//            txtCEP.setOnKeyTyped((KeyEvent event) -> {
+//                if(!"0123456789".contains(event.getCharacter())){
+//                    event.consume();
+//                }
+//                if(event.getCharacter().trim().length()==0){ // apagando
+//                    if(txtCEP.getText().length()==6){
+//                        txtCEP.setText(txtCEP.getText().substring(0,5));
+//                        txtCEP.positionCaret(txtCEP.getText().length());
+//                    }
+//                }else{ // escrevendo
+//                    if(txtCEP.getText().length()>8)event.consume();
+//                    if(txtCEP.getText().length()==5){
+//                        txtCEP.setText(txtCEP.getText()+"-");
+//                        txtCEP.positionCaret(txtCEP.getText().length());
+//                    }
+//                }
+//            });
+//            txtCEP.setOnKeyReleased((KeyEvent evt) -> {
+//                if(!txtCEP.getText().matches("\\d-*")){
+//                    txtCEP.setText(txtCEP.getText().replaceAll("[^\\d-]", ""));
+//                    txtCEP.positionCaret(txtCEP.getText().length());
+//                }
+//            });
+//    }
 }
