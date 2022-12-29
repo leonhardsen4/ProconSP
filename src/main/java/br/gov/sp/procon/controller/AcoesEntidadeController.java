@@ -1,7 +1,12 @@
 package br.gov.sp.procon.controller;
 
+import java.util.List;
+import dev.pauloribeiro.cepcorreios.CepCorreio;
+import dev.pauloribeiro.cepcorreios.CorreiosApiFactory;
+
 import br.gov.sp.procon.model.*;
 import br.gov.sp.procon.utils.ConnectionFactory;
+import br.gov.sp.procon.utils.MaskFieldUtil;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,12 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AcoesEntidadeController implements Initializable {
@@ -300,6 +301,7 @@ public class AcoesEntidadeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtIdEntidade.setText(String.valueOf(EntidadeController.ent.getId()));
         txtEntidade.setText(EntidadeController.ent.getNome());
+        MaskFieldUtil.numericField(txtCEP);
         tcID.setMinWidth(50.0);
         tcID.setMaxWidth(50.0);
         tcEndereco.setMinWidth(650.0);
@@ -516,11 +518,29 @@ public class AcoesEntidadeController implements Initializable {
         txtBairro.setText("");
         txtMunicipio.setText("");
         cmbUF.getSelectionModel().clearSelection();
+        txtCEP.requestFocus();
     }
 
-    public void focoLogradouro(KeyEvent keyEvent) {
+    public void buscarCep(KeyEvent keyEvent) throws InterruptedException {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
-            txtLogradouro.requestFocus();
+            if(txtCEP.getText().length() == 8) {
+                List<CepCorreio> CEP = CorreiosApiFactory.get().getCep(txtCEP.getText());
+                if (CEP.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Erro");
+                    alert.setContentText("CEP não encontrado");
+                    alert.showAndWait();
+                    txtLogradouro.requestFocus();
+                } else {
+                    txtLogradouro.setText(CEP.get(0).getLogradouro().toUpperCase());
+                    txtBairro.setText(CEP.get(0).getBairro().toUpperCase());
+                    txtMunicipio.setText(CEP.get(0).getCidade().toUpperCase());
+                    cmbUF.getSelectionModel().select(CEP.get(0).getEstado().toUpperCase());
+                    txtNumero.requestFocus();
+                }
+            }else if(txtCEP.getText().length() < 8){
+                txtCEP.setText("");
+            }
         }
     }
 
@@ -565,31 +585,4 @@ public class AcoesEntidadeController implements Initializable {
             salvarEndereco();
         }
     }
-
-//    public void mascaraCEP() {
-//            String val = "";
-//            txtCEP.setOnKeyTyped((KeyEvent event) -> {
-//                if(!"0123456789".contains(event.getCharacter())){
-//                    event.consume();
-//                }
-//                if(event.getCharacter().trim().length()==0){ // apagando
-//                    if(txtCEP.getText().length()==6){
-//                        txtCEP.setText(txtCEP.getText().substring(0,5));
-//                        txtCEP.positionCaret(txtCEP.getText().length());
-//                    }
-//                }else{ // escrevendo
-//                    if(txtCEP.getText().length()>8)event.consume();
-//                    if(txtCEP.getText().length()==5){
-//                        txtCEP.setText(txtCEP.getText()+"-");
-//                        txtCEP.positionCaret(txtCEP.getText().length());
-//                    }
-//                }
-//            });
-//            txtCEP.setOnKeyReleased((KeyEvent evt) -> {
-//                if(!txtCEP.getText().matches("\\d-*")){
-//                    txtCEP.setText(txtCEP.getText().replaceAll("[^\\d-]", ""));
-//                    txtCEP.positionCaret(txtCEP.getText().length());
-//                }
-//            });
-//    }
 }

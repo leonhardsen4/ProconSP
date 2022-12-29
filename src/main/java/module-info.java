@@ -4,6 +4,7 @@ module br.gov.sp.procon {
     requires java.sql;
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
+    requires cepcorreios;
 
     exports br.gov.sp.procon.view;
     opens br.gov.sp.procon.view to javafx.fxml;

@@ -14,7 +14,7 @@
            <Tab fx:id="tabEndereco" text="Endereços">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                    <TextField fx:id="txtIdEndereco" disable="true" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
-                   <TextField fx:id="txtCEP" layoutX="81.0" layoutY="14.0" onKeyPressed="#focoLogradouro" prefHeight="26.0" prefWidth="87.0" promptText="CEP" />
+                   <TextField fx:id="txtCEP" layoutX="81.0" layoutY="14.0" onKeyPressed="#buscarCep" prefHeight="26.0" prefWidth="87.0" promptText="CEP" />
                    <TextField fx:id="txtLogradouro" layoutX="176.0" layoutY="14.0" onKeyPressed="#focoNumero" onKeyTyped="#buscaEndereco" prefHeight="26.0" prefWidth="434.0" promptText="Logradouro" />
                    <TextField fx:id="txtNumero" layoutX="618.0" layoutY="14.0" onKeyPressed="#focoComplemento" prefHeight="26.0" prefWidth="67.0" promptText="Número" />
                    <TextField fx:id="txtComplemento" layoutX="695.0" layoutY="14.0" onKeyPressed="#focoBairro" prefHeight="26.0" prefWidth="160.0" promptText="Complemento" />

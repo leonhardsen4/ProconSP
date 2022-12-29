@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 public class TelaEntidade extends Application {
 
+        public static void main(String[] args) {
+            launch(TelaEntidade.class);
+        }
         @Override
         public void start(Stage stage) throws Exception {
             FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("Entidade.fxml"));
