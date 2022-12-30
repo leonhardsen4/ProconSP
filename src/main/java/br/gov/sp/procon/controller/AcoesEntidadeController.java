@@ -251,50 +251,111 @@ public class AcoesEntidadeController implements Initializable {
         ConnectionFactory.closeConnection(conn, stmt);
     }
 
-    public ObservableList<Endereco> listarEnderecos() throws SQLException {
+    public ObservableList<Endereco> listarEnderecos() {
         int idEntidade = Integer.parseInt(txtIdEntidade.getText());
         conn = ConnectionFactory.getConnection();
         sql = "SELECT * FROM ENDERECOS WHERE ID_ENTIDADE = " + idEntidade + " ORDER BY ID";
-        stmt = conn.prepareStatement(sql);
-        rs = stmt.executeQuery();
-        List<Endereco> listaEnderecos = new ArrayList<>();
-        while (rs.next()) {
-            Endereco e = new Endereco();
-            e.setId(rs.getInt("ID"));
-            e.setCep(rs.getString("CEP"));
-            e.setLogradouro(rs.getString("LOGRADOURO"));
-            e.setNumero(rs.getString("NUMERO"));
-            e.setComplemento(rs.getString("COMPLEMENTO"));
-            e.setBairro(rs.getString("BAIRRO"));
-            e.setMunicipio(rs.getString("MUNICIPIO"));
-            e.setUf(rs.getString("UF"));
-            listaEnderecos.add(e);
+        try {
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List<Endereco> listaEnderecos = new ArrayList<>();
+            while (rs.next()) {
+                Endereco e = new Endereco();
+                e.setId(rs.getInt("ID"));
+                e.setCep(rs.getString("CEP"));
+                e.setLogradouro(rs.getString("LOGRADOURO"));
+                e.setNumero(rs.getString("NUMERO"));
+                e.setComplemento(rs.getString("COMPLEMENTO"));
+                e.setBairro(rs.getString("BAIRRO"));
+                e.setMunicipio(rs.getString("MUNICIPIO"));
+                e.setUf(rs.getString("UF"));
+                listaEnderecos.add(e);
+            }
+            ConnectionFactory.closeConnection(conn, stmt, rs);
+            return FXCollections.observableArrayList(listaEnderecos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            throw new RuntimeException(e.getMessage());
         }
-        ConnectionFactory.closeConnection(conn, stmt, rs);
-        return FXCollections.observableArrayList(listaEnderecos);
     }
 
-    public ObservableList<Endereco> buscarEnderecos(String string) throws SQLException {
+    public ObservableList<Unidade> listarUnidades() {
+        int idEntidade = Integer.parseInt(txtIdEntidade.getText());
+        conn = ConnectionFactory.getConnection();
+        sql = "SELECT * FROM UNIDADES WHERE ID_ENTIDADE = " + idEntidade + " ORDER BY ID";
+        try {
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List<Unidade> listaUnidades = new ArrayList<>();
+            while (rs.next()) {
+                Unidade u = new Unidade();
+                u.setId(rs.getInt("ID"));
+                u.setIdEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
+                u.setUnidade(rs.getString("UNIDADE"));
+                listaUnidades.add(u);
+            }
+            ConnectionFactory.closeConnection(conn, stmt, rs);
+            return FXCollections.observableArrayList(listaUnidades);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public ObservableList<Endereco> buscarEnderecos(String string) {
         int idEntidade = Integer.parseInt(txtIdEntidade.getText());
         conn = ConnectionFactory.getConnection();
         sql = "SELECT * FROM ENDERECOS WHERE ID_ENTIDADE = '" + idEntidade + "' AND LOGRADOURO LIKE '%" + string + "%';";
-        stmt = conn.prepareStatement(sql);
-        rs = stmt.executeQuery();
-        List<Endereco> listaEnderecos = new ArrayList<>();
-        while (rs.next()) {
-            Endereco e = new Endereco();
-            e.setId(rs.getInt("ID"));
-            e.setCep(rs.getString("CEP"));
-            e.setLogradouro(rs.getString("LOGRADOURO"));
-            e.setNumero(rs.getString("NUMERO"));
-            e.setComplemento(rs.getString("COMPLEMENTO"));
-            e.setBairro(rs.getString("BAIRRO"));
-            e.setMunicipio(rs.getString("MUNICIPIO"));
-            e.setUf(rs.getString("UF"));
-            listaEnderecos.add(e);
+        try {
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List<Endereco> listaEnderecos = new ArrayList<>();
+            while (rs.next()) {
+                Endereco e = new Endereco();
+                e.setId(rs.getInt("ID"));
+                e.setCep(rs.getString("CEP"));
+                e.setLogradouro(rs.getString("LOGRADOURO"));
+                e.setNumero(rs.getString("NUMERO"));
+                e.setComplemento(rs.getString("COMPLEMENTO"));
+                e.setBairro(rs.getString("BAIRRO"));
+                e.setMunicipio(rs.getString("MUNICIPIO"));
+                e.setUf(rs.getString("UF"));
+                listaEnderecos.add(e);
+            }
+            ConnectionFactory.closeConnection(conn, stmt, rs);
+            return FXCollections.observableArrayList(listaEnderecos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            throw new RuntimeException(e.getMessage());
         }
-        ConnectionFactory.closeConnection(conn, stmt, rs);
-        return FXCollections.observableArrayList(listaEnderecos);
+    }
+
+    public ObservableList<Unidade> buscarUnidades(String string) {
+        int idEntidade = Integer.parseInt(txtIdEntidade.getText());
+        conn = ConnectionFactory.getConnection();
+        sql = "SELECT * FROM UNIDADES WHERE ID_ENTIDADE = '" + idEntidade + "' AND UNIDADE LIKE '%" + string + "%';";
+        try {
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            List<Unidade> listaUnidades = new ArrayList<>();
+            while (rs.next()) {
+                Unidade u = new Unidade();
+                u.setId(rs.getInt("ID"));
+                u.setIdEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
+                u.setUnidade(rs.getString("UNIDADE"));
+                listaUnidades.add(u);
+                listaUnidades.add(u);
+            }
+            ConnectionFactory.closeConnection(conn, stmt, rs);
+            return FXCollections.observableArrayList(listaUnidades);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
@@ -494,15 +555,7 @@ public class AcoesEntidadeController implements Initializable {
     }
 
     public void buscaEndereco() {
-        txtLogradouro.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                tblEndereco.setItems(buscarEnderecos(newValue));
-            } catch (SQLException e) {
-                e.printStackTrace();
-                e.getCause();
-                throw new RuntimeException(e.getMessage());
-            }
-        });
+        txtLogradouro.textProperty().addListener((observable, oldValue, newValue) -> tblEndereco.setItems(buscarEnderecos(newValue)));
     }
 
     public void atualizarTabela() throws SQLException {
