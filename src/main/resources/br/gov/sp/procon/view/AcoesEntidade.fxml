@@ -49,7 +49,7 @@
            </Tab>
            <Tab fx:id="tabUnidade" text="Unidades">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                   <Button fx:id="btnCriarUnidade" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: #08457e;" text="Criar Unidade" textFill="WHITE">
+                   <Button fx:id="btnCriarUnidade" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#novaUnidade" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: #08457e;" text="Criar Unidade" textFill="WHITE">
                        <cursor>
                            <Cursor fx:constant="HAND" />
                        </cursor>
@@ -60,7 +60,7 @@
                    <TextField fx:id="txtIdUnidade" disable="true" editable="false" layoutX="134.0" layoutY="14.0" prefHeight="26.0" prefWidth="60.0" promptText="ID" />
                    <TextField fx:id="txtUnidade" layoutX="201.0" layoutY="14.0" prefHeight="26.0" prefWidth="652.0" promptText="Unidade" />
                    <ComboBox fx:id="cmbEnderecoUnidade" layoutX="14.0" layoutY="48.0" prefHeight="26.0" prefWidth="693.0" promptText="Endereço" />
-                   <Button fx:id="btnSalvarUnidade" layoutX="714.0" layoutY="48.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
+                   <Button fx:id="btnSalvarUnidade" layoutX="714.0" layoutY="48.0" mnemonicParsing="false" onAction="#salvarUnidade" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #08457e;" text="Salvar" textFill="WHITE">
                        <cursor>
                            <Cursor fx:constant="HAND" />
                        </cursor>
@@ -68,7 +68,7 @@
                            <Font size="13.0" />
                        </font>
                    </Button>
-                   <Button fx:id="btnLimparUnidade" layoutX="787.0" layoutY="48.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #3CB371;" text="Limpar" textFill="WHITE">
+                   <Button fx:id="btnLimparUnidade" layoutX="787.0" layoutY="48.0" mnemonicParsing="false" onAction="#limparUnidade" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #3CB371;" text="Limpar" textFill="WHITE">
                        <cursor>
                            <Cursor fx:constant="HAND" />
                        </cursor>
@@ -79,8 +79,8 @@
                    <TableView fx:id="tblUnidade" layoutX="14.0" layoutY="84.0" prefHeight="281.0" prefWidth="839.0">
                        <columns>
                            <TableColumn fx:id="tcIdUnidade" prefWidth="34.0" text="ID" />
-                           <TableColumn fx:id="tcUnidade" prefWidth="249.0" text="Unidade" />
-                           <TableColumn fx:id="tcEnderecoUnidade" prefWidth="415.0" text="Endereço" />
+                           <TableColumn fx:id="tcUnidade" prefWidth="252.0" text="Unidade" />
+                           <TableColumn fx:id="tcEnderecoUnidade" prefWidth="412.0" text="Endereço" />
                            <TableColumn fx:id="tcEditarUnidade" prefWidth="72.0" text="Editar" />
                            <TableColumn fx:id="tcExcluirUnidade" minWidth="4.0" prefWidth="68.0" text="Excluir" />
                        </columns>

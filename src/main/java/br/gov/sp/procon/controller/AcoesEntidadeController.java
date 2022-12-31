@@ -64,7 +64,7 @@ public class AcoesEntidadeController implements Initializable {
     @FXML public TableView<Unidade> tblUnidade;
     @FXML public TableColumn<Unidade, Integer> tcIdUnidade;
     @FXML public TableColumn<Unidade, String> tcUnidade;
-    @FXML public TableColumn<Unidade, String> tcEnderecoUnidade;
+    @FXML public TableColumn<Unidade, Integer> tcEnderecoUnidade;
     @FXML public TableColumn<Unidade, Integer> tcEditarUnidade;
     @FXML public TableColumn<Unidade, Integer> tcExcluirUnidade;
     //TAB PESSOA
@@ -91,6 +91,7 @@ public class AcoesEntidadeController implements Initializable {
     ResultSet rs;
     String sql;
     static Endereco end;
+    static Unidade uni;
 
     public void adicionarEndereco(Endereco e) {
         conn = ConnectionFactory.getConnection();
@@ -162,7 +163,7 @@ public class AcoesEntidadeController implements Initializable {
                 "COMPLEMENTO = ?, " +
                 "BAIRRO = ?, " +
                 "MUNICIPIO = ?, " +
-                "UF = ? WHERE ID = ?";
+                "UF = ? WHERE ID_UNIDADE = ?";
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, e.getCep());
@@ -197,7 +198,7 @@ public class AcoesEntidadeController implements Initializable {
 
     public void editarUnidade(Unidade u) {
         conn = ConnectionFactory.getConnection();
-        sql = "UPDATE UNIDADES SET UNIDADE = ?, ID_ENDERECO_ENTIDADE = ? WHERE ID = ?";
+        sql = "UPDATE UNIDADES SET UNIDADE = ?, ID_ENDERECO_ENTIDADE = ? WHERE ID_UNIDADE = ?";
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, u.getUnidade());
@@ -238,7 +239,7 @@ public class AcoesEntidadeController implements Initializable {
 
     public void removerUnidade(Unidade u){
         conn = ConnectionFactory.getConnection();
-        sql = "DELETE FROM UNIDADES WHERE ID = ?";
+        sql = "DELETE FROM UNIDADES WHERE ID_UNIDADE = ?";
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, u.getId());
@@ -283,14 +284,14 @@ public class AcoesEntidadeController implements Initializable {
     public ObservableList<Unidade> listarUnidades() {
         int idEntidade = Integer.parseInt(txtIdEntidade.getText());
         conn = ConnectionFactory.getConnection();
-        sql = "SELECT * FROM UNIDADES WHERE ID_ENTIDADE = " + idEntidade + " ORDER BY ID";
+        sql = "SELECT * FROM UNIDADES WHERE ID_ENTIDADE = " + idEntidade + " ORDER BY ID_UNIDADE";
         try {
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             List<Unidade> listaUnidades = new ArrayList<>();
             while (rs.next()) {
                 Unidade u = new Unidade();
-                u.setId(rs.getInt("ID"));
+                u.setId(rs.getInt("ID_UNIDADE"));
                 u.setIdEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
                 u.setUnidade(rs.getString("UNIDADE"));
                 listaUnidades.add(u);
@@ -343,10 +344,9 @@ public class AcoesEntidadeController implements Initializable {
             List<Unidade> listaUnidades = new ArrayList<>();
             while (rs.next()) {
                 Unidade u = new Unidade();
-                u.setId(rs.getInt("ID"));
+                u.setId(rs.getInt("ID_UNIDADE"));
                 u.setIdEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
                 u.setUnidade(rs.getString("UNIDADE"));
-                listaUnidades.add(u);
                 listaUnidades.add(u);
             }
             ConnectionFactory.closeConnection(conn, stmt, rs);
@@ -362,20 +362,18 @@ public class AcoesEntidadeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtIdEntidade.setText(String.valueOf(EntidadeController.ent.getId()));
         txtEntidade.setText(EntidadeController.ent.getNome());
+
+        //ABA ENDEREÇOS
         MaskFieldUtil.numericField(txtCEP);
-        tcID.setMinWidth(50.0);
-        tcID.setMaxWidth(50.0);
-        tcEndereco.setMinWidth(650.0);
-        tcEndereco.setMaxWidth(650.0);
-        tcEditar.setMinWidth(70.0);
-        tcEditar.setMaxWidth(70.0);
-        tcExcluir.setMinWidth(70.0);
-        tcExcluir.setMaxWidth(70.0);
+        cmbUF.setItems(listaUF());
+        tcID.setPrefWidth(50.0);
+        tcID.isSortable();
+        tcEndereco.setPrefWidth(651.0);
+        tcEndereco.isSortable();
+        tcEditar.setPrefWidth(70.0);
+        tcExcluir.setPrefWidth(70.0);
         tcEditar.setStyle("-fx-alignment: CENTER");
         tcExcluir.setStyle("-fx-alignment: CENTER");
-        tcID.isSortable();
-        tcEndereco.isSortable();
-        cmbUF.setItems(listaUF());
         adicionarBotaoEditar();
         adicionarBotaoExcluir();
         tcID.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -388,8 +386,36 @@ public class AcoesEntidadeController implements Initializable {
                         + cellData.getValue().getUf() + " "
                         + cellData.getValue().getCep()
         ));
+
+        //ABA UNIDADES
+        cmbEnderecoUnidade.setItems(listarEnderecos());
+        tcIdUnidade.setPrefWidth(50.0);
+        tcIdUnidade.isSortable();
+        tcUnidade.setPrefWidth(220.0);
+        tcUnidade.isSortable();
+        tcEnderecoUnidade.setPrefWidth(430.0);
+        tcEnderecoUnidade.isSortable();
+        tcEditarUnidade.setPrefWidth(70.0);
+        tcExcluirUnidade.setPrefWidth(70.0);
+        tcEditarUnidade.setStyle("-fx-alignment: CENTER");
+        tcExcluirUnidade.setStyle("-fx-alignment: CENTER");
+        adicionarBotaoEditarUnidade();
+        adicionarBotaoExcluirUnidade();
+        tcIdUnidade.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcUnidade.setCellValueFactory(new PropertyValueFactory<>("unidade"));
+        tcEnderecoUnidade.setCellValueFactory(new PropertyValueFactory<>("idEnderecoEntidade"));
+        txtIdUnidade.setVisible(false);
+        txtUnidade.setVisible(false);
+        cmbEnderecoUnidade.setVisible(false);
+        btnSalvarUnidade.setVisible(false);
+        btnLimparUnidade.setVisible(false);
+        tblUnidade.setVisible(false);
+
+        //ABA PESSOAS
+
         try {
             atualizarTabela();
+            atualizarTabelaUnidade();
         } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
@@ -429,7 +455,7 @@ public class AcoesEntidadeController implements Initializable {
         return FXCollections.observableArrayList(listagemUF);
     }
 
-    public void salvarEndereco() throws SQLException {
+    public void salvarEndereco(){
         if (txtCEP.getText().isEmpty()) {
             btnSalvarEndereco.isDisabled();
             txtCEP.requestFocus();
@@ -455,9 +481,12 @@ public class AcoesEntidadeController implements Initializable {
                 end.setUf(cmbUF.getSelectionModel().getSelectedItem());
                 editarEndereco(end);
             }
-            atualizarTabela();
+            try {
+                atualizarTabela();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             limparCampos();
-            txtEntidade.requestFocus();
         }
     }
 
@@ -523,7 +552,6 @@ public class AcoesEntidadeController implements Initializable {
                                     try {
                                         removerEndereco(e);
                                         limparCampos();
-                                        txtCEP.requestFocus();
                                         atualizarTabela();
                                     } catch (SQLException ex) {
                                         ex.printStackTrace();
@@ -633,9 +661,159 @@ public class AcoesEntidadeController implements Initializable {
         }
     }
 
-    public void btnSalvarEndereco(KeyEvent keyEvent) throws SQLException {
+    public void btnSalvarEndereco(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             salvarEndereco();
         }
+    }
+
+    public void novaUnidade() {
+        txtIdUnidade.setVisible(true);
+        txtUnidade.setVisible(true);
+        cmbEnderecoUnidade.setVisible(true);
+        btnSalvarUnidade.setVisible(true);
+        btnLimparUnidade.setVisible(true);
+        tblUnidade.setVisible(true);
+        txtUnidade.requestFocus();
+    }
+
+    public void buscaUnidade() {
+        txtUnidade.textProperty().addListener((observable, oldValue, newValue) -> tblUnidade.setItems(buscarUnidades(newValue)));
+    }
+
+    public void limparUnidade() {
+        txtIdUnidade.setText("");
+        txtUnidade.setText("");
+        cmbEnderecoUnidade.getSelectionModel().clearSelection();
+        txtUnidade.requestFocus();
+    }
+
+    public void salvarUnidade() {
+        if (txtIdUnidade.getText().isEmpty()) {
+            Unidade u = new Unidade();
+            u.setIdEntidade(Integer.parseInt(txtIdEntidade.getText()));
+            u.setUnidade(txtUnidade.getText());
+            u.setIdEnderecoEntidade(cmbEnderecoUnidade.getSelectionModel().getSelectedItem().getId());
+            adicionarUnidade(u);
+        } else {
+            uni.setUnidade(txtUnidade.getText());
+            uni.setIdEnderecoEntidade(cmbEnderecoUnidade.getSelectionModel().getSelectedItem().getId());
+            editarUnidade(uni);
+        }
+        atualizarTabelaUnidade();
+        limparUnidade();
+    }
+
+    private void atualizarTabelaUnidade() {
+        tblUnidade.setItems(listarUnidades());
+    }
+
+    private void adicionarBotaoEditarUnidade() {
+        Callback<TableColumn<Unidade, Integer>, TableCell<Unidade, Integer>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Unidade, Integer> call(final TableColumn<Unidade, Integer> param) {
+                return new TableCell<>() {
+                    private final Button btnEditarUnidade = new Button("Editar");
+
+                    {
+                        btnEditarUnidade.setOnAction((ActionEvent event) -> {
+                            uni = getTableView().getItems().get(getIndex());
+                            edicaoUnidade(uni);
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            btnEditarUnidade.setText("Editar");
+                            btnEditarUnidade.setCursor(Cursor.HAND);
+                            btnEditarUnidade.setBackground(Background.fill(Color.rgb(255, 140, 0)));
+                            btnEditarUnidade.setStyle("-fx-text-fill: #FFFFFF");
+                            setGraphic(btnEditarUnidade);
+                        }
+                    }
+                };
+            }
+        };
+        tcEditarUnidade.setCellFactory(cellFactory);
+    }
+
+    private void edicaoUnidade(Unidade uni) {
+        txtIdUnidade.setText(String.valueOf(uni.getId()));
+        txtUnidade.setText(uni.getUnidade());
+        Endereco ender = enderecoUnidade(uni);
+        cmbEnderecoUnidade.getSelectionModel().select(ender.getId());
+    }
+
+    public Endereco enderecoUnidade(Unidade u){
+        int idEndereco = u.getIdEnderecoEntidade();
+        Endereco e = new Endereco();
+        try {
+            conn = ConnectionFactory.getConnection();
+            sql = "SELECT * FROM ENDERECOS AS E INNER JOIN UNIDADES AS U ON E.ID = U.ID_ENDERECO_ENTIDADE WHERE E.ID = '" + idEndereco + "';";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                e.setId(rs.getInt("ID"));
+                e.setCep(rs.getString("CEP"));
+                e.setLogradouro(rs.getString("LOGRADOURO"));
+                e.setNumero(rs.getString("NUMERO"));
+                e.setComplemento(rs.getString("COMPLEMENTO"));
+                e.setBairro(rs.getString("BAIRRO"));
+                e.setMunicipio(rs.getString("MUNICIPIO"));
+                e.setUf(rs.getString("UF"));
+            }
+            ConnectionFactory.closeConnection(conn, stmt, rs);
+            return e;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        }
+    }
+
+    private void adicionarBotaoExcluirUnidade() {
+        Callback<TableColumn<Unidade, Integer>, TableCell<Unidade, Integer>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Unidade, Integer> call(final TableColumn<Unidade, Integer> param) {
+                return new TableCell<>() {
+                    private final Button btnExcluirUnidade = new Button("Excluir");
+
+                    {
+                        btnExcluirUnidade.setOnAction((ActionEvent event) -> {
+                            Unidade u = getTableView().getItems().get(getIndex());
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Exclusão");
+                            alert.setContentText("Tem certeza que deseja excluir a unidade selecionada?");
+                            alert.showAndWait().ifPresent(response -> {
+                                if (response == ButtonType.OK) {
+                                    removerUnidade(u);
+                                    limparUnidade();
+                                    atualizarTabelaUnidade();
+                                }
+                            });
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            btnExcluirUnidade.setText("Excluir");
+                            btnExcluirUnidade.setCursor(Cursor.HAND);
+                            btnExcluirUnidade.setBackground(Background.fill(Color.rgb(220, 20, 60)));
+                            btnExcluirUnidade.setStyle("-fx-text-fill: #FFFFFF");
+                            setGraphic(btnExcluirUnidade);
+                        }
+                    }
+                };
+            }
+        };
+        tcExcluirUnidade.setCellFactory(cellFactory);
     }
 }

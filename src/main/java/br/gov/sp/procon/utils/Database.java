@@ -44,7 +44,7 @@ public class Database {
                   
                   --TABELA UNIDADES__
                   CREATE TABLE IF NOT EXISTS UNIDADES (
-                      ID                   INTEGER PRIMARY KEY AUTOINCREMENT,
+                      ID_UNIDADE                   INTEGER PRIMARY KEY AUTOINCREMENT,
                       ID_ENTIDADE          INTEGER REFERENCES ENTIDADES (ID)
                                                    NOT NULL ON CONFLICT ROLLBACK,
                       ID_ENDERECO_ENTIDADE INTEGER REFERENCES ENDERECOS (ID)
