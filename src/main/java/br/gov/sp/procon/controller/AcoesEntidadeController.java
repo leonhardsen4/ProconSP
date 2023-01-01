@@ -64,7 +64,7 @@ public class AcoesEntidadeController implements Initializable {
     @FXML public TableView<Unidade> tblUnidade;
     @FXML public TableColumn<Unidade, Integer> tcIdUnidade;
     @FXML public TableColumn<Unidade, String> tcUnidade;
-    @FXML public TableColumn<Unidade, Integer> tcEnderecoUnidade;
+    @FXML public TableColumn<Endereco, Integer> tcEnderecoUnidade;
     @FXML public TableColumn<Unidade, Integer> tcEditarUnidade;
     @FXML public TableColumn<Unidade, Integer> tcExcluirUnidade;
     //TAB PESSOA
@@ -105,7 +105,7 @@ public class AcoesEntidadeController implements Initializable {
             stmt.setString(6, e.getComplemento());
             stmt.setString(7, e.getBairro());
             stmt.setString(8, e.getMunicipio());
-            stmt.setString(9, e.getUf());
+            stmt.setString(9, String.valueOf(e.getUf()));
             stmt.execute();
         } catch (SQLException ex) {
             Alert erro = new Alert(Alert.AlertType.ERROR);
@@ -172,7 +172,7 @@ public class AcoesEntidadeController implements Initializable {
             stmt.setString(4, e.getComplemento());
             stmt.setString(5, e.getBairro());
             stmt.setString(6, e.getMunicipio());
-            stmt.setString(7, e.getUf());
+            stmt.setString(7, String.valueOf(e.getUf()));
             stmt.setInt(8, e.getId());
             stmt.execute();
         } catch (SQLException ex) {
@@ -531,7 +531,7 @@ public class AcoesEntidadeController implements Initializable {
         txtComplemento.setText(endereco.getComplemento());
         txtBairro.setText(endereco.getBairro());
         txtMunicipio.setText(endereco.getMunicipio());
-        cmbUF.getSelectionModel().select(endereco.getUf());
+        cmbUF.getSelectionModel().select(String.valueOf(endereco.getUf()));
     }
 
     public void adicionarBotaoExcluir() {
@@ -675,6 +675,7 @@ public class AcoesEntidadeController implements Initializable {
         btnLimparUnidade.setVisible(true);
         tblUnidade.setVisible(true);
         txtUnidade.requestFocus();
+        atualizarTabelaUnidade();
     }
 
     public void buscaUnidade() {
@@ -684,8 +685,8 @@ public class AcoesEntidadeController implements Initializable {
     public void limparUnidade() {
         txtIdUnidade.setText("");
         txtUnidade.setText("");
-        cmbEnderecoUnidade.getSelectionModel().clearSelection();
         txtUnidade.requestFocus();
+        cmbEnderecoUnidade.getSelectionModel().clearSelection();
     }
 
     public void salvarUnidade() {
@@ -705,6 +706,7 @@ public class AcoesEntidadeController implements Initializable {
     }
 
     private void atualizarTabelaUnidade() {
+        cmbEnderecoUnidade.setItems(listarEnderecos());
         tblUnidade.setItems(listarUnidades());
     }
 
@@ -744,8 +746,8 @@ public class AcoesEntidadeController implements Initializable {
     private void edicaoUnidade(Unidade uni) {
         txtIdUnidade.setText(String.valueOf(uni.getId()));
         txtUnidade.setText(uni.getUnidade());
-        Endereco ender = enderecoUnidade(uni);
-        cmbEnderecoUnidade.getSelectionModel().select(ender.getId());
+        cmbEnderecoUnidade.getSelectionModel().select(enderecoUnidade(uni));
+        // TODO: 31/12/2022
     }
 
     public Endereco enderecoUnidade(Unidade u){
