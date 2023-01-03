@@ -52,6 +52,18 @@ public class Database {
                       UNIDADE              TEXT    NOT NULL ON CONFLICT ROLLBACK
                   );
                   
+                  --VIEW UNIDADES
+                  CREATE VIEW VIEW_UNIDADES AS
+                      SELECT U.ID_UNIDADE ID,
+                             U.ID_ENTIDADE,
+                             U.ID_ENDERECO_ENTIDADE,
+                             U.UNIDADE UNIDADE,
+                             E.LOGRADOURO || " " || E.NUMERO || " " || E.MUNICIPIO || " " || E.UF || " " || E.CEP ENDERECO
+                        FROM UNIDADES AS U
+                             INNER JOIN
+                             ENDERECOS AS E
+                       WHERE U.ID_ENDERECO_ENTIDADE = E.ID;
+                  
                   --TABELA SERVIDORES--
                   CREATE TABLE IF NOT EXISTS SERVIDORES (
                       ID         INTEGER PRIMARY KEY AUTOINCREMENT,

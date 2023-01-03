@@ -64,7 +64,7 @@ public class AcoesEntidadeController implements Initializable {
     @FXML public TableView<Unidade> tblUnidade;
     @FXML public TableColumn<Unidade, Integer> tcIdUnidade;
     @FXML public TableColumn<Unidade, String> tcUnidade;
-    @FXML public TableColumn<Endereco, Integer> tcEnderecoUnidade;
+    @FXML public TableColumn<Unidade, Integer> tcEnderecoUnidade;
     @FXML public TableColumn<Unidade, Integer> tcEditarUnidade;
     @FXML public TableColumn<Unidade, Integer> tcExcluirUnidade;
     //TAB PESSOA
@@ -134,7 +134,7 @@ public class AcoesEntidadeController implements Initializable {
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(2, u.getIdEntidade());
-            stmt.setInt(3, u.getIdEnderecoEntidade());
+            stmt.setInt(3, u.getEnderecoEntidade());
             stmt.setString(4, u.getUnidade());
             stmt.execute();
         } catch (SQLException ex) {
@@ -202,7 +202,7 @@ public class AcoesEntidadeController implements Initializable {
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, u.getUnidade());
-            stmt.setInt(2, u.getIdEnderecoEntidade());
+            stmt.setInt(2, u.getEnderecoEntidade());
             stmt.setInt(3, u.getId());
             stmt.execute();
         } catch (SQLException ex) {
@@ -292,8 +292,8 @@ public class AcoesEntidadeController implements Initializable {
             while (rs.next()) {
                 Unidade u = new Unidade();
                 u.setId(rs.getInt("ID_UNIDADE"));
-                u.setIdEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
                 u.setUnidade(rs.getString("UNIDADE"));
+                u.setEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
                 listaUnidades.add(u);
             }
             ConnectionFactory.closeConnection(conn, stmt, rs);
@@ -337,16 +337,16 @@ public class AcoesEntidadeController implements Initializable {
     public ObservableList<Unidade> buscarUnidades(String string) {
         int idEntidade = Integer.parseInt(txtIdEntidade.getText());
         conn = ConnectionFactory.getConnection();
-        sql = "SELECT * FROM UNIDADES WHERE ID_ENTIDADE = '" + idEntidade + "' AND UNIDADE LIKE '%" + string + "%';";
+        sql = "SELECT * FROM VIEW_UNIDADES WHERE ID_ENTIDADE = '" + idEntidade + "' AND UNIDADE LIKE '%" + string + "%';";
         try {
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             List<Unidade> listaUnidades = new ArrayList<>();
             while (rs.next()) {
                 Unidade u = new Unidade();
-                u.setId(rs.getInt("ID_UNIDADE"));
-                u.setIdEnderecoEntidade(rs.getInt("ID_ENDERECO_ENTIDADE"));
+                u.setId(rs.getInt("ID"));
                 u.setUnidade(rs.getString("UNIDADE"));
+                u.setEnderecoEntidade(rs.getInt("ENDERECO"));
                 listaUnidades.add(u);
             }
             ConnectionFactory.closeConnection(conn, stmt, rs);
@@ -403,7 +403,8 @@ public class AcoesEntidadeController implements Initializable {
         adicionarBotaoExcluirUnidade();
         tcIdUnidade.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcUnidade.setCellValueFactory(new PropertyValueFactory<>("unidade"));
-        tcEnderecoUnidade.setCellValueFactory(new PropertyValueFactory<>("idEnderecoEntidade"));
+        // TODO: 02/01/2023 resolver esta pendenga 
+        //tcEnderecoUnidade.setCellValueFactory(new PropertyValueFactory<>(enderecoUnidade().get(0)));
         txtIdUnidade.setVisible(false);
         txtUnidade.setVisible(false);
         cmbEnderecoUnidade.setVisible(false);
@@ -694,11 +695,11 @@ public class AcoesEntidadeController implements Initializable {
             Unidade u = new Unidade();
             u.setIdEntidade(Integer.parseInt(txtIdEntidade.getText()));
             u.setUnidade(txtUnidade.getText());
-            u.setIdEnderecoEntidade(cmbEnderecoUnidade.getSelectionModel().getSelectedItem().getId());
+            u.setEnderecoEntidade(cmbEnderecoUnidade.getSelectionModel().getSelectedItem().getId());
             adicionarUnidade(u);
         } else {
             uni.setUnidade(txtUnidade.getText());
-            uni.setIdEnderecoEntidade(cmbEnderecoUnidade.getSelectionModel().getSelectedItem().getId());
+            uni.setEnderecoEntidade(cmbEnderecoUnidade.getSelectionModel().getSelectedItem().getId());
             editarUnidade(uni);
         }
         atualizarTabelaUnidade();
@@ -706,7 +707,6 @@ public class AcoesEntidadeController implements Initializable {
     }
 
     private void atualizarTabelaUnidade() {
-        cmbEnderecoUnidade.setItems(listarEnderecos());
         tblUnidade.setItems(listarUnidades());
     }
 
@@ -747,11 +747,10 @@ public class AcoesEntidadeController implements Initializable {
         txtIdUnidade.setText(String.valueOf(uni.getId()));
         txtUnidade.setText(uni.getUnidade());
         cmbEnderecoUnidade.getSelectionModel().select(enderecoUnidade(uni));
-        // TODO: 31/12/2022
     }
 
     public Endereco enderecoUnidade(Unidade u){
-        int idEndereco = u.getIdEnderecoEntidade();
+        int idEndereco = u.getEnderecoEntidade();
         Endereco e = new Endereco();
         try {
             conn = ConnectionFactory.getConnection();
@@ -818,4 +817,28 @@ public class AcoesEntidadeController implements Initializable {
         };
         tcExcluirUnidade.setCellFactory(cellFactory);
     }
+
+    public List<String> enderecoUnidade() {
+        String e = "";
+        List<String> listaEnderecos;
+        try {
+            conn = ConnectionFactory.getConnection();
+            sql = "SELECT ID_ENTIDADE, ENDERECO FROM VIEW_UNIDADES WHERE ID_ENTIDADE = '" + txtIdEntidade + "';";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            listaEnderecos = new ArrayList<>();
+            if (rs.next()) {
+                e = rs.getString("ENDERECO");
+                listaEnderecos.add(e);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        }
+        ConnectionFactory.closeConnection(conn, stmt, rs);
+        return listaEnderecos;
+    }
+
+
 }

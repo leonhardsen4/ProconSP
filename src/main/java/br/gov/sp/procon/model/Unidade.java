@@ -1,22 +1,24 @@
 package br.gov.sp.procon.model;
 
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class Unidade {
 
     private int id;
     private int idEntidade;
-    private int idEnderecoEntidade;
+    private int enderecoEntidade;
     private String unidade;
     private List<Servidor> listaServidores;
 
     public Unidade() {
     }
 
-    public Unidade(int id, int idEntidade, int idEnderecoEntidade, String unidade, List<Servidor> listaServidores) {
+    public Unidade(int id, int idEntidade, int enderecoEntidade, String unidade, List<Servidor> listaServidores) {
         this.id = id;
         this.idEntidade = idEntidade;
-        this.idEnderecoEntidade = idEnderecoEntidade;
+        this.enderecoEntidade = enderecoEntidade;
         this.unidade = unidade;
         this.listaServidores = listaServidores;
     }
@@ -37,20 +39,20 @@ public class Unidade {
         this.idEntidade = idEntidade;
     }
 
-    public int getIdEnderecoEntidade() {
-        return idEnderecoEntidade;
+    public int getEnderecoEntidade() {
+        return enderecoEntidade;
     }
 
-    public void setIdEnderecoEntidade(int idEnderecoEntidade) {
-        this.idEnderecoEntidade = idEnderecoEntidade;
+    public void setEnderecoEntidade(int enderecoEntidade) {
+        this.enderecoEntidade = enderecoEntidade;
     }
 
     public String getUnidade() {
-        return unidade;
+        return unidade.toUpperCase();
     }
 
     public void setUnidade(String unidade) {
-        this.unidade = unidade;
+        this.unidade = unidade.toUpperCase();
     }
 
     public List<Servidor> getListaServidores() {
@@ -60,5 +62,6 @@ public class Unidade {
     public void setListaServidores(List<Servidor> listaServidores) {
         this.listaServidores = listaServidores;
     }
+
 
 }
