@@ -5,6 +5,7 @@ module br.gov.sp.procon {
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
     requires cepcorreios;
+    requires static lombok;
 
     exports br.gov.sp.procon.view;
     opens br.gov.sp.procon.view to javafx.fxml;
