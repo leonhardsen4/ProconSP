@@ -1,18 +1,23 @@
 package br.gov.sp.procon.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Usuario {
 
+    @Id @GeneratedValue
     @Getter @Setter private int id;
-    @Getter @Setter private String usuario;
-    @Getter @Setter private String senha;
-    @Getter @Setter private String nome;
-    @Getter @Setter private String sobreNome;
-    @Getter @Setter private String email;
+    @Getter @Setter @Column private String usuario;
+    @Getter @Setter @Column private String senha;
+    @Getter @Setter @Column private String nome;
+    @Getter @Setter @Column private String sobreNome;
+    @Getter @Setter @Column private String email;
 }
