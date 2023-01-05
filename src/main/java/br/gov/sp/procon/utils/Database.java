@@ -11,15 +11,17 @@ public class Database {
         Statement stmt = conn.createStatement();
         stmt.execute("""
                 --TABELA USUARIO--
-                CREATE TABLE IF NOT EXISTS USUARIOS (
-                      ID      INTEGER   PRIMARY KEY AUTOINCREMENT,
-                      USUARIO TEXT      NOT NULL
-                                        UNIQUE ON CONFLICT ROLLBACK,
-                      NOME              NOT NULL
-                                        UNIQUE ON CONFLICT ROLLBACK,
-                      SENHA   TEXT (64) NOT NULL
-                                        DEFAULT (12345)
-                  );
+                CREATE TABLE USUARIOS (
+                        ID        INTEGER   PRIMARY KEY AUTOINCREMENT,
+                        USUARIO   TEXT      NOT NULL
+                                            UNIQUE ON CONFLICT ROLLBACK,
+                        SENHA     TEXT (64) NOT NULL
+                                            DEFAULT (12345),
+                        NOME                NOT NULL
+                                            UNIQUE ON CONFLICT ROLLBACK,
+                        SOBRENOME TEXT,
+                        EMAIL     TEXT
+                    );
                   
                   --TABELA ENTIDADES--
                   CREATE TABLE IF NOT EXISTS ENTIDADES (
