@@ -7,6 +7,7 @@ module br.gov.sp.procon {
     requires cepcorreios;
     requires static lombok;
     requires java.persistence;
+    requires org.hibernate.orm.core;
 
     exports br.gov.sp.procon.view;
     opens br.gov.sp.procon.view to javafx.fxml;

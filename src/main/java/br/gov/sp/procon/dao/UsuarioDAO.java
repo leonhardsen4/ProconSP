@@ -4,8 +4,9 @@ import br.gov.sp.procon.model.Usuario;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
+
+import static javax.persistence.Persistence.createEntityManagerFactory;
 
 public class UsuarioDAO {
 
@@ -24,7 +25,7 @@ public class UsuarioDAO {
     }
 
     private EntityManager getEntityManager(){
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("hibernateProcon");
+        EntityManagerFactory factory = createEntityManagerFactory("hibProcon");
         if(entityManager ==null){
             entityManager = factory.createEntityManager();
         }
