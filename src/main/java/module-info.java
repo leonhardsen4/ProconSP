@@ -6,6 +6,7 @@ module br.gov.sp.procon {
     requires java.desktop;
     requires cepcorreios;
     requires static lombok;
+    requires jfxtras.labs;
 
     exports br.gov.sp.procon.view;
     opens br.gov.sp.procon.view to javafx.fxml;
