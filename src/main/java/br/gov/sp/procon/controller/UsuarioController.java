@@ -14,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
@@ -27,7 +26,6 @@ public class UsuarioController implements Initializable {
     @FXML public TableColumn<Usuario, Integer> colunaID;
     @FXML public TableColumn<Usuario, String> colunaUsuario;
     @FXML public TableColumn<Usuario, String> colunaNome;
-    @FXML public TableColumn<Usuario, String> colunaSobreNome;
     @FXML public TableColumn<Usuario, String> colunaEmail;
     @FXML public TableColumn<Usuario, Integer> colunaEditar;
     @FXML public TableColumn<Usuario, Integer> colunaExcluir;
@@ -40,7 +38,6 @@ public class UsuarioController implements Initializable {
         colunaID.setCellValueFactory(new PropertyValueFactory<>("id"));
         colunaUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colunaSobreNome.setCellValueFactory(new PropertyValueFactory<>("sobreNome"));
         colunaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         adicionarBotaoEditar();
         adicionarBotaoExcluir();
@@ -65,8 +62,14 @@ public class UsuarioController implements Initializable {
                     {
                         btnEditar.setOnAction((ActionEvent event) -> {
                             usr = getTableView().getItems().get(getIndex());
-                            txtPesquisar.setText(usr.getUsuario());
-                            //usuarioDAO.editar(usr);
+                            CadastroUsuarioController cadastroUsuarioController = new CadastroUsuarioController();
+                            try {
+                                cadastroUsuarioController.editarUsuario(usr);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                e.getCause();
+                                throw new RuntimeException(e.getMessage());
+                            }
                         });
                     }
 
@@ -150,8 +153,9 @@ public class UsuarioController implements Initializable {
         });
     }
 
-    public void novoUsuario(){
-        // TODO: 05/01/2023
+    public void novoUsuario() throws Exception {
+        CadastroUsuarioController cadastroUsuarioController = new CadastroUsuarioController();
+        cadastroUsuarioController.chamarTelaCadastroUsuario();
     }
 
     public void atualizarTabela() throws SQLException {
@@ -168,4 +172,5 @@ public class UsuarioController implements Initializable {
             btnNovoUsuario.requestFocus();
         }
     }
+
 }

@@ -11,7 +11,7 @@ public class Database {
         Statement stmt = conn.createStatement();
         stmt.execute("""
                 --TABELA USUARIO--
-                CREATE TABLE USUARIOS (
+                CREATE TABLE IF NOT EXISTS USUARIOS (
                         ID        INTEGER   PRIMARY KEY AUTOINCREMENT,
                         USUARIO   TEXT      NOT NULL
                                             UNIQUE ON CONFLICT ROLLBACK,

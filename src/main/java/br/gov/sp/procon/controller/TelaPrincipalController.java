@@ -36,7 +36,6 @@ public class TelaPrincipalController implements Initializable{
     public void abrirUsuarios() throws Exception {
         TelaUsuarios telaUsuarios = new TelaUsuarios();
         telaUsuarios.start(new Stage());
-        System.out.println("O usuário " + LoginController.uLogado.getUsuario() + " entrou na tela de usuários.");
     }
 
     public void abrirEntidades() throws Exception {

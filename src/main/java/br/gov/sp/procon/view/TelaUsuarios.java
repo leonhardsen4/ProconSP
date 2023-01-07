@@ -9,10 +9,10 @@ public class TelaUsuarios extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("Cadastro_Usuario.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 390, 350);
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("TelaListaUsuarios.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setScene(scene);
-        stage.setTitle("USUÁRIOS");
+        stage.setTitle("LISTA DE USUÁRIOS");
         stage.setResizable(false);
         stage.show();
     }
