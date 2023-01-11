@@ -1,5 +1,6 @@
 package br.gov.sp.procon.controller;
 
+import br.gov.sp.procon.utils.Alertas;
 import br.gov.sp.procon.view.TelaPrincipal;
 import br.gov.sp.procon.model.Usuario;
 import br.gov.sp.procon.utils.ConnectionFactory;
@@ -43,10 +44,7 @@ public class LoginController implements Initializable {
         if(!txtUsuario.getText().isBlank() && !txtSenha.getText().isEmpty()){
             validarLogin();
         }else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenção!");
-            alert.setContentText("Ambos os campos usuário e senha precisam ser preenchidos.");
-            alert.showAndWait();
+            Alertas.alertaCuidado("Atenção", "Ambos os campos usuário e senha precisam ser preenchidos.");
             txtUsuario.setText("");
             txtSenha.setText("");
             txtUsuario.requestFocus();
@@ -56,17 +54,13 @@ public class LoginController implements Initializable {
     private void validarLogin() {
         Connection conn = ConnectionFactory.getConnection();
         String usuario = txtUsuario.getText();
-        String senha = txtSenha.getText();
-        //String senha = PasswordUtil.criptografa256(txtSenha.getText());
+        String senha = PasswordUtil.criptografa256(txtSenha.getText());
         String sql = "SELECT * FROM USUARIOS WHERE USUARIO = " + usuario + " AND SENHA = '" + senha + "';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if(!rs.next()){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Atenção!");
-                alert.setContentText("Um dos campos 'usuário' ou 'senha' (ou ambos) está incorreto.");
-                alert.showAndWait();
+                Alertas.alertaErro("Atenção", "Um dos campos 'usuário' ou 'senha' (ou ambos) está incorreto.");
                 txtUsuario.setText("");
                 txtSenha.setText("");
                 txtUsuario.requestFocus();

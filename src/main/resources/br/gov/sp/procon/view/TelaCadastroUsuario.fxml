@@ -24,7 +24,7 @@
                            <Cursor fx:constant="HAND" />
                        </cursor>
                    </Button>
-                   <Button fx:id="btnSalvar" layoutX="251.0" layoutY="17.0" mnemonicParsing="false" onAction="#salvarUsuario" onKeyPressed="#salvarUsuario" style="-fx-background-color: #739ABE;" text="Salvar" textFill="WHITE">
+                   <Button fx:id="btnSalvar" layoutX="251.0" layoutY="17.0" mnemonicParsing="false" onAction="#salvarUsuario1" onKeyPressed="#salvarUsuario2" style="-fx-background-color: #739ABE;" text="Salvar" textFill="WHITE">
                        <cursor>
                            <Cursor fx:constant="HAND" />
                        </cursor>

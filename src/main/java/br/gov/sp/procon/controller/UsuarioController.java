@@ -3,16 +3,22 @@ package br.gov.sp.procon.controller;
 import br.gov.sp.procon.dao.UsuarioDAO;
 import br.gov.sp.procon.model.Usuario;
 
+import br.gov.sp.procon.view.TelaCadastroUsuarios;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Callback;
 import java.net.URL;
 import java.sql.*;
@@ -31,7 +37,8 @@ public class UsuarioController implements Initializable {
     @FXML public TableColumn<Usuario, Integer> colunaExcluir;
 
     UsuarioDAO usuarioDAO = new UsuarioDAO();
-    Usuario usr = null;
+    static Usuario usr = null;
+    static Window window;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,20 +64,22 @@ public class UsuarioController implements Initializable {
             @Override
             public TableCell<Usuario, Integer> call(final TableColumn<Usuario, Integer> param) {
                 return new TableCell<>() {
+                    private void handle(ActionEvent event) {
+                        usr = getTableView().getItems().get(getIndex());
+                        CadastroUsuarioController cadastroUsuarioController = new CadastroUsuarioController();
+                        try {
+                            cadastroUsuarioController.editarUsuario();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            e.getCause();
+                            throw new RuntimeException(e.getMessage());
+                        }
+                    }
+
                     private final Button btnEditar = new Button("Editar");
 
                     {
-                        btnEditar.setOnAction((ActionEvent event) -> {
-                            usr = getTableView().getItems().get(getIndex());
-                            CadastroUsuarioController cadastroUsuarioController = new CadastroUsuarioController();
-                            try {
-                                cadastroUsuarioController.editarUsuario(usr);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                e.getCause();
-                                throw new RuntimeException(e.getMessage());
-                            }
-                        });
+                        btnEditar.setOnAction(this::handle);
                     }
 
                     @Override
@@ -154,8 +163,9 @@ public class UsuarioController implements Initializable {
     }
 
     public void novoUsuario() throws Exception {
-        CadastroUsuarioController cadastroUsuarioController = new CadastroUsuarioController();
-        cadastroUsuarioController.chamarTelaCadastroUsuario();
+        usr = null;
+        TelaCadastroUsuarios telaCadastroUsuarios = new TelaCadastroUsuarios();
+        telaCadastroUsuarios.start(new Stage());
     }
 
     public void atualizarTabela() throws SQLException {
@@ -172,5 +182,7 @@ public class UsuarioController implements Initializable {
             btnNovoUsuario.requestFocus();
         }
     }
+
+
 
 }
